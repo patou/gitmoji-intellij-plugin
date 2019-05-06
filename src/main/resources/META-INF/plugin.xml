@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>com.github.patou.gitmoji-intellij-plugin</id>
+    <name>Gitmoji</name>
+    <vendor email="patrice@desaintsteban.fr" url="https://intellij.patou.dev">Patrice de Saint Steban</vendor>
+
+    <description><![CDATA[
+    Allow to add gitmotji emoticon in commit dialog.
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <action id="Gitmoji.GitCommitAction" class="com.github.patou.gitmoji.GitCommitAction" text="GitmojiButton" icon="/icons/gitmoji.png"
+                description="Add gitmoji button">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
