@@ -7,15 +7,18 @@
     Allow to add gitmotji emoticon in commit dialog.
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <change-notes>
+        <![CDATA[
+        <p>
+            <h4>1.0.0</h4>
+            <ul>
+                <li>First version, display a button near the history commit list in the commit dialog</li>
+            </ul>
+        </p>
+        ]]>
+    </change-notes>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+    <depends>com.intellij.modules.lang</depends>
 
     <actions>
         <action id="Gitmoji.GitCommitAction" class="com.github.patou.gitmoji.GitCommitAction" text="GitmojiButton" icon="/icons/gitmoji.png"
