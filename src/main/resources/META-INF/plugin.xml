@@ -1,5 +1,5 @@
-<idea-plugin>
-    <id>com.github.patou.gitmoji-intellij-plugin</id>
+<idea-plugin url="https://www.jetbrains.com/idea">
+    <id>com.github.patou.gitmoji</id>
     <name>Gitmoji</name>
     <vendor email="patrice@desaintsteban.fr" url="https://intellij.patou.dev">Patrice de Saint Steban</vendor>
 
@@ -9,12 +9,7 @@
 
     <change-notes>
         <![CDATA[
-        <p>
-            <h4>1.0.0</h4>
-            <ul>
-                <li>First version, display a button near the history commit list in the commit dialog</li>
-            </ul>
-        </p>
+            Change notes is settings in the build.gradle file
         ]]>
     </change-notes>
 

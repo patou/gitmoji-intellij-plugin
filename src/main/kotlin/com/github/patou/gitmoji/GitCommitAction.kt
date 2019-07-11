@@ -41,11 +41,11 @@ class GitCommitAction : AnAction() {
         gitmojis.add(GitmojiData("bug", "Fixing a bug."));
         gitmojis.add(GitmojiData("ambulance", "Critical hotfix."));
         gitmojis.add(GitmojiData("sparkles", "Introducing new features."));
-        gitmojis.add(GitmojiData("memo", "Writing docs."));
+        gitmojis.add(GitmojiData("pencil", "Writing docs."));
         gitmojis.add(GitmojiData("rocket", "Deploying stuff."));
         gitmojis.add(GitmojiData("lipstick", "Updating the UI and style files."));
         gitmojis.add(GitmojiData("tada", "Initial commit."));
-        gitmojis.add(GitmojiData("white_check_mark", "Adding tests."));
+        gitmojis.add(GitmojiData("white_check_mark", "Updating tests."));
         gitmojis.add(GitmojiData("lock", "Fixing security issues."));
         gitmojis.add(GitmojiData("apple", "Fixing something on macOS."));
         gitmojis.add(GitmojiData("penguin", "Fixing something on Linux."));
@@ -68,7 +68,7 @@ class GitCommitAction : AnAction() {
         gitmojis.add(GitmojiData("wrench", "Changing configuration files."));
         gitmojis.add(GitmojiData("globe_with_meridians", "Internationalization and localization."));
         gitmojis.add(GitmojiData("pencil2", "Fixing typos."));
-        gitmojis.add(GitmojiData("hankey", "Writing bad code that needs to be improved."));
+        gitmojis.add(GitmojiData("poop", "Writing bad code that needs to be improved."));
         gitmojis.add(GitmojiData("rewind", "Reverting changes."));
         gitmojis.add(GitmojiData("twisted_rightwards_arrows", "Merging branches."));
         gitmojis.add(GitmojiData("package", "Updating compiled files or packages."));
