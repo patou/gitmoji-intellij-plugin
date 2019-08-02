@@ -25,7 +25,7 @@ import com.intellij.ui.speedSearch.SpeedSearchUtil.applySpeedSearchHighlighting
 import com.intellij.util.ObjectUtils.sentinel
 import com.intellij.util.containers.nullize
 import com.intellij.util.ui.JBUI.scale
-import com.intellij.vcs.commit.CommitMessageInspectionProfile
+import com.intellij.vcs.commit.message.CommitMessageInspectionProfile.getSubjectRightMargin
 import java.awt.Point
 import javax.swing.JList
 import javax.swing.ListSelectionModel
@@ -113,7 +113,7 @@ class GitCommitAction : AnAction() {
     private fun createPopup(project: Project, commitMessage: CommitMessage, listGitmoji: List<GitmojiData>): JBPopup {
         var chosenMessage: GitmojiData? = null
         var selectedMessage: GitmojiData? = null
-        val rightMargin = CommitMessageInspectionProfile.getSubjectRightMargin(project)
+        val rightMargin = getSubjectRightMargin(project)
         val previewCommandGroup = sentinel("Preview Commit Message")
 
         return JBPopupFactory.getInstance().createPopupChooserBuilder(listGitmoji)
