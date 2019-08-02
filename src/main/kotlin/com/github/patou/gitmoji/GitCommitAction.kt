@@ -171,7 +171,7 @@ class GitCommitAction : AnAction() {
                         gitmoji: GitmojiData,
                         groupId: Any) =
         CommandProcessor.getInstance().executeCommand(project, {
-            var message = commitMessage.editorField.text ?: "";
+            var message = commitMessage.editorField.text;
             if (codeRegex.containsMatchIn(message)) {
                 message = codeRegex.replace(message, gitmoji.emotji)
             }
