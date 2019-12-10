@@ -97,6 +97,10 @@ class GitCommitAction : AnAction() {
         gitmojis.add(GitmojiData("mag", "Improving SEO."));
         gitmojis.add(GitmojiData("wheel_of_dharma", "Work about Kubernetes."));
         gitmojis.add(GitmojiData("label", "Adding or updating types (Flow, TypeScript)"));
+        gitmojis.add(GitmojiData("seedling", "Adding or updating seed files"));
+        gitmojis.add(GitmojiData("triangular_flag_on_post", "Adding, updating, or removing feature flags"));
+        gitmojis.add(GitmojiData("dizzy", "Adding or updating animations and transitions"));
+        gitmojis.add(GitmojiData("goal_net", "Catching errors"));
     }
 
     val codeRegex = Regex(":[a-z0-9_]+:")
