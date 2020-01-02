@@ -4,7 +4,7 @@
     <vendor email="patrice@desaintsteban.fr" url="https://intellij.patou.dev">Patrice de Saint Steban</vendor>
 
     <description><![CDATA[
-    Allow to add gitmotji emoticon in commit dialog.
+    Allow to add gitmoji emoticon in commit dialog.
     ]]></description>
 
     <change-notes>
@@ -21,4 +21,9 @@
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other"
+                             id="com.github.patou.gitmoji.config"/>
+    </extensions>
 </idea-plugin>
