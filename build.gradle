@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.patou'
-version '1.4.0'
+version '1.4.1'
 
 repositories {
     mavenCentral()
@@ -17,6 +17,7 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2019.3'
+    updateSinceUntilBuild false
 }
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -26,6 +27,12 @@ compileTestKotlin {
 }
 patchPluginXml {
     changeNotes """
+        <p>
+            <h4>1.4.1</h4>
+            <ul>
+                <li>Compatibility with since 2019.1 versions</li>
+            </ul>
+        </p>
         <p>
             <h4>1.4.0</h4>
             <ul>

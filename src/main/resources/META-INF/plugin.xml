@@ -12,6 +12,7 @@
             Change notes is settings in the build.gradle file
         ]]>
     </change-notes>
+    <idea-version since-build="191" />
 
     <depends>com.intellij.modules.lang</depends>
 
