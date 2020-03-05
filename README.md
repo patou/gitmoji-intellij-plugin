@@ -34,3 +34,8 @@ First time, copy gradle.properties.sample to gradle.properties
 - Copy the generated token in the gradle.properties
 
 Execute the publishPlugin gradle task
+
+## Inspiration plugin
+
+This plugin was inspired from the plugin created by @biezhi : https://github.com/biezhi/gitmoji-plugin.
+Thanks for is works.
