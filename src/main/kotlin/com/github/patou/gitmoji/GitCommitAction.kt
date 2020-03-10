@@ -103,6 +103,7 @@ class GitCommitAction : AnAction() {
         gitmojis.add(GitmojiData("triangular_flag_on_post", "🚩", "Adding, updating, or removing feature flags"));
         gitmojis.add(GitmojiData("dizzy", "💫", "Adding or updating animations and transitions"));
         gitmojis.add(GitmojiData("goal_net", "🥅", "Catching errors"));
+        gitmojis.add(GitmojiData("wastebasket", "🗑", "Deprecating code that needs to be cleaned up."));
     }
 
     val codeRegex = Regex(":[a-z0-9_]+:")
