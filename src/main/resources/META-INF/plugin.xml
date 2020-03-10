@@ -19,7 +19,8 @@
     <actions>
         <action id="Gitmoji.GitCommitAction" class="com.github.patou.gitmoji.GitCommitAction" text="GitmojiButton" icon="/icons/gitmoji.png"
                 description="Add gitmoji button">
-            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+            <keyboard-shortcut first-keystroke="ctrl alt g" keymap="$default" />
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first" />
         </action>
     </actions>
 
