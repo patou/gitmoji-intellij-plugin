@@ -1,5 +1,6 @@
 package com.github.patou.gitmoji
 
+import com.google.gson.Gson
 import com.intellij.ide.TextCopyProvider
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.AnAction
@@ -28,7 +29,10 @@ import com.intellij.util.ObjectUtils.sentinel
 import com.intellij.util.containers.nullize
 import com.intellij.util.ui.JBUI.scale
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile.getSubjectRightMargin
+import okhttp3.*
+import okhttp3.Request.Builder
 import java.awt.Point
+import java.io.IOException
 import javax.swing.JList
 import javax.swing.ListSelectionModel
 
@@ -38,73 +42,7 @@ class GitCommitAction : AnAction() {
 
     init {
         isEnabledInModalContext = true
-        gitmojis.add(GitmojiData("art", "🎨", "Improving structure / format of the code."))
-        gitmojis.add(GitmojiData("zap", "⚡️", "Improving performance."))
-        gitmojis.add(GitmojiData("fire", "🔥", "Removing code or files."))
-        gitmojis.add(GitmojiData("bug", "🐛", "Fixing a bug."))
-        gitmojis.add(GitmojiData("ambulance", "🚑", "Critical hotfix."))
-        gitmojis.add(GitmojiData("sparkles", "✨", "Introducing new features."))
-        gitmojis.add(GitmojiData("pencil", "📝", "Writing docs."))
-        gitmojis.add(GitmojiData("rocket", "🚀", "Deploying stuff."))
-        gitmojis.add(GitmojiData("lipstick", "💄", "Updating the UI and style files."))
-        gitmojis.add(GitmojiData("tada", "🎉", "Initial commit."))
-        gitmojis.add(GitmojiData("white_check_mark", "✅", "Updating tests."))
-        gitmojis.add(GitmojiData("lock", "🔒", "Fixing security issues."))
-        gitmojis.add(GitmojiData("apple", "🍎", "Fixing something on macOS."))
-        gitmojis.add(GitmojiData("penguin", "🐧", "Fixing something on Linux."))
-        gitmojis.add(GitmojiData("checkered_flag", "🏁", "Fixing something on Windows."))
-        gitmojis.add(GitmojiData("robot", "🤖", "Fixing something on Android."))
-        gitmojis.add(GitmojiData("green_apple", "🍏", "Fixing something on iOS."))
-        gitmojis.add(GitmojiData("bookmark", "🔖", "Releasing / Version tags."))
-        gitmojis.add(GitmojiData("rotating_light", "🚨", "Removing linter warnings."))
-        gitmojis.add(GitmojiData("construction", "🚧", "Work in progress."))
-        gitmojis.add(GitmojiData("green_heart", "💚", "Fixing CI Build."))
-        gitmojis.add(GitmojiData("arrow_down", "⬇️", "Downgrading dependencies."))
-        gitmojis.add(GitmojiData("arrow_up", "⬆️", "Upgrading dependencies."))
-        gitmojis.add(GitmojiData("pushpin", "📌", "Pinning dependencies to specific versions."))
-        gitmojis.add(GitmojiData("construction_worker", "👷‍️", "Adding CI build system."))
-        gitmojis.add(GitmojiData("chart_with_upwards_trend", "📈", "Adding analytics or tracking code."))
-        gitmojis.add(GitmojiData("recycle", "♻️", "Refactoring code."))
-        gitmojis.add(GitmojiData("whale", "🐳", "Work about Docker."))
-        gitmojis.add(GitmojiData("heavy_minus_sign", "➖", "Removing a dependency."))
-        gitmojis.add(GitmojiData("heavy_plus_sign", "➕", "Adding a dependency."))
-        gitmojis.add(GitmojiData("wrench", "🔧", "Changing configuration files."))
-        gitmojis.add(GitmojiData("globe_with_meridians", "🌐", "Internationalization and localization."))
-        gitmojis.add(GitmojiData("pencil2", "✏️", "Fixing typos."))
-        gitmojis.add(GitmojiData("poop", "💩", "Writing bad code that needs to be improved."))
-        gitmojis.add(GitmojiData("rewind", "⏪", "Reverting changes."))
-        gitmojis.add(GitmojiData("twisted_rightwards_arrows", "🔀", "Merging branches."))
-        gitmojis.add(GitmojiData("package", "📦", "Updating compiled files or packages."))
-        gitmojis.add(GitmojiData("alien", "👽", "Updating code due to external API changes."))
-        gitmojis.add(GitmojiData("truck", "🚚", "Moving or renaming files."))
-        gitmojis.add(GitmojiData("page_facing_up", "📄", "Adding or updating license."))
-        gitmojis.add(GitmojiData("boom",  "💥","Introducing breaking changes."))
-        gitmojis.add(GitmojiData("bento",  "🍱","Adding or updating assets."))
-        gitmojis.add(GitmojiData("ok_hand", "👌", "Updating code due to code review changes."))
-        gitmojis.add(GitmojiData("wheelchair", "♿️", "Improving accessibility."))
-        gitmojis.add(GitmojiData("bulb", "💡", "Documenting source code."))
-        gitmojis.add(GitmojiData("beers", "🍻", "Writing code drunkenly."))
-        gitmojis.add(GitmojiData("speech_balloon", "💬", "Updating text and literals."))
-        gitmojis.add(GitmojiData("card_file_box", "🗃", "Performing database related changes."))
-        gitmojis.add(GitmojiData("loud_sound", "🔊", "Adding logs."))
-        gitmojis.add(GitmojiData("mute", "🔇", "Removing logs."))
-        gitmojis.add(GitmojiData("busts_in_silhouette", "👥", "Add contributor(s)."))
-        gitmojis.add(GitmojiData("children_crossing", "🚸", "Improving user experience / usability."))
-        gitmojis.add(GitmojiData("building_construction", "🏗", "Making architectural changes."))
-        gitmojis.add(GitmojiData("iphone", "📱", "Working on responsive design."))
-        gitmojis.add(GitmojiData("clown_face", "🤡", "Mocking things."))
-        gitmojis.add(GitmojiData("egg", "🥚", "Adding an easter egg."))
-        gitmojis.add(GitmojiData("see_no_evil", "🙈", "Adding or updating a .gitignore file."))
-        gitmojis.add(GitmojiData("camera_flash", "📸", "Adding or updating snapshots."))
-        gitmojis.add(GitmojiData("alembic", "⚗️", "Experimenting new things."))
-        gitmojis.add(GitmojiData("mag", "🔍", "Improving SEO."))
-        gitmojis.add(GitmojiData("wheel_of_dharma", "☸️", "Work about Kubernetes."))
-        gitmojis.add(GitmojiData("label", "🏷", "Adding or updating types (Flow, TypeScript)"))
-        gitmojis.add(GitmojiData("seedling", "🌱", "Adding or updating seed files"))
-        gitmojis.add(GitmojiData("triangular_flag_on_post", "🚩", "Adding, updating, or removing feature flags"))
-        gitmojis.add(GitmojiData("dizzy", "💫", "Adding or updating animations and transitions"))
-        gitmojis.add(GitmojiData("goal_net", "🥅", "Catching errors"))
-        gitmojis.add(GitmojiData("wastebasket", "🗑", "Deprecating code that needs to be cleaned up."))
+        loadGitmojiFromHTTP()
     }
 
     val codeRegex = Regex(":[a-z0-9_]+:")
@@ -134,7 +72,13 @@ class GitCommitAction : AnAction() {
             }
             .setItemChosenCallback { chosenMessage = it }
             .setRenderer(object : ColoredListCellRenderer<GitmojiData>() {
-                override fun customizeCellRenderer(list: JList<out GitmojiData>, value: GitmojiData, index: Int, selected: Boolean, hasFocus: Boolean) {
+                override fun customizeCellRenderer(
+                    list: JList<out GitmojiData>,
+                    value: GitmojiData,
+                    index: Int,
+                    selected: Boolean,
+                    hasFocus: Boolean
+                ) {
                     append("${value.emoji}\t${value.code} ", SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
                     appendTextPadding(5)
                     append(first(convertLineSeparators(value.description, RETURN_SYMBOL), rightMargin, false))
@@ -157,7 +101,7 @@ class GitCommitAction : AnAction() {
                     getApplication().invokeLater { chosenMessage ?: cancelPreview(project, commitMessage) }
                 }
             })
-            .setNamerForFiltering { "${it.name} ${it.description}" }
+            .setNamerForFiltering { "${it.code} ${it.description}" }
             .setAutoPackHeightOnFiltering(false)
             .createPopup()
             .apply {
@@ -173,10 +117,12 @@ class GitCommitAction : AnAction() {
             }
     }
 
-    private fun preview(project: Project,
-                        commitMessage: CommitMessage,
-                        gitmoji: GitmojiData,
-                        groupId: Any) =
+    private fun preview(
+        project: Project,
+        commitMessage: CommitMessage,
+        gitmoji: GitmojiData,
+        groupId: Any
+    ) =
         CommandProcessor.getInstance().executeCommand(project, {
             val useUnicode = PropertiesComponent.getInstance(project).getBoolean(CONFIG_USE_UNICODE, false)
             var message = commitMessage.editorField.text
@@ -194,8 +140,7 @@ class GitCommitAction : AnAction() {
                     message = "${gitmoji.emoji} $message"
                 }
                 selectionStart = gitmoji.emoji.length + 1
-            }
-            else {
+            } else {
                 message = if (codeRegex.containsMatchIn(message)) {
                     codeRegex.replace(message, gitmoji.code)
                 } else {
@@ -206,7 +151,11 @@ class GitCommitAction : AnAction() {
             commitMessage.setCommitMessage(message)
             commitMessage.editorField.selectAll()
             commitMessage.editorField.caretModel.removeSecondaryCarets()
-            commitMessage.editorField.caretModel.primaryCaret.setSelection(selectionStart, commitMessage.editorField.document.getTextLength(), false)
+            commitMessage.editorField.caretModel.primaryCaret.setSelection(
+                selectionStart,
+                commitMessage.editorField.document.getTextLength(),
+                false
+            )
         }, "", groupId, commitMessage.editorField.document)
 
     private fun cancelPreview(project: Project, commitMessage: CommitMessage) {
@@ -217,4 +166,42 @@ class GitCommitAction : AnAction() {
     }
 
     private fun getCommitMessage(e: AnActionEvent) = e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL) as? CommitMessage
+
+    private fun loadGitmojiFromHTTP() {
+        val client = OkHttpClient()
+        val request: Request = Builder()
+            .url("https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                loadDefaultGitmoji()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) loadDefaultGitmoji()
+                    else {
+                        loadGitmoji(response.body!!.string())
+                    }
+                }
+            }
+        })
+    }
+
+    private fun loadDefaultGitmoji() {
+        javaClass.getResourceAsStream("/gitmojis.json").use { inputStream ->
+            if (inputStream != null) {
+                val text = inputStream.bufferedReader().readText()
+                loadGitmoji(text)
+            }
+        }
+    }
+
+    private fun loadGitmoji(text: String) {
+        Gson().fromJson(text, Gitmojis::class.java).also {
+            it.gitmojis.forEach {
+                gitmojis.add(GitmojiData(it.code, it.emoji, it.description))
+            }
+        }
+    }
 }
