@@ -1,12 +1,16 @@
 <idea-plugin url="https://www.jetbrains.com/idea">
     <id>com.github.patou.gitmoji</id>
-    <name>Gitmoji +</name>
+    <name>Gitmoji plus: Commit button</name>
     <vendor email="patrice@desaintsteban.fr" url="https://intellij.patou.dev">Patrice de Saint Steban</vendor>
 
     <description><![CDATA[
-    <p>Allow to add gitmoji emoticon in commit dialog with a button to display the list of gitmoji from <a href="https://gitmoji.carloscuesta.me/">reference commit rules.</a></p>
+    <p>Add a gitmoji emoticon in your commits to make them sexier!</p>
+    <p>This plug-in will help you to choose and add the gitmoji, via a button in the Commit window, among a predefined list of emoticons coming from <a href="https://gitmoji.carloscuesta.me/">reference commit rules.</a></p>
 
-    <h3>Functionalities :</h3>
+    <img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-button.png"/>
+    <img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-list.png"/>
+
+    <h3>Features :</h3>
     <ul>
     <li> Button near the Commit History Message allow to dispay the list of gitmoji</li>
     <li> Option to use the code (:sparkles:) or the unicode version (✨)</li>
@@ -14,7 +18,7 @@
     <li> Shortcut to open the list : ctrl alt g (or cmd alt g on mac)</li>
     </ul>
 
-    <p>This plugin is a fork from <a href="https://plugins.jetbrains.com/plugin/10315-gitmoji">Gitmoji plugin</a>.</p>
+    <p>This plugin is a fork and improvement of <a href="https://plugins.jetbrains.com/plugin/10315-gitmoji">Gitmoji Plug In</a>.</p>
     ]]></description>
 
     <change-notes>
