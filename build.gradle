@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.patou'
-version '1.5.0'
+version '1.6.0'
 
 repositories {
     mavenCentral()
@@ -23,6 +23,14 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+        <p>
+            <h4>1.6.0</h4>
+            <ul>
+                <li>Rename, change description and add an icon</li>
+                <li>Display directly the emoji instead of an image</li>
+                <li>Load the list of gitmoji from the repo of gitmoji (fallback to a local list if error)</li>
+            </ul>
+        </p>
         <p>
             <h4>1.5.0</h4>
             <ul>

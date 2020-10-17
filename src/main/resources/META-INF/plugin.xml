@@ -16,6 +16,7 @@
     <li> Option to use the code (:sparkles:) or the unicode version (✨)</li>
     <li> Insert or replace the gitmoji before the message (keep the git commit message)</li>
     <li> Shortcut to open the list : ctrl alt g (or cmd alt g on mac)</li>
+    <li> Load the list of gitmoji on startup from the repos of gitmoji (fallback to a local list if error).</li>
     </ul>
 
     <p>This plugin is a fork and improvement of <a href="https://plugins.jetbrains.com/plugin/10315-gitmoji">Gitmoji Plug In</a>.</p>
