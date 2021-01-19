@@ -4,13 +4,9 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
-import java.awt.BorderLayout
-import java.awt.CardLayout
 import java.awt.FlowLayout
 import java.awt.GridLayout
-import java.util.*
 import javax.swing.*
-import kotlin.properties.Delegates
 
 class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
