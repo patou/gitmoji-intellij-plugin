@@ -129,18 +129,19 @@ class GitCommitAction : AnAction() {
             val selectionStart: Int
             if (useUnicode) {
                 var replaced = false
+                val textAfterUnicode = PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)
+
                 for (moji in gitmojis) {
-                    if (message.contains("${moji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}")) {
-                        message = message.replaceFirst("${moji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}", "${gitmoji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}")
+                    if (message.contains("${moji.emoji}$textAfterUnicode")) {
+                        message = message.replaceFirst("${moji.emoji}$textAfterUnicode", "${gitmoji.emoji}$textAfterUnicode")
                         replaced = true
                         break
                     }
                 }
                 if (!replaced) {
-                    message = "${gitmoji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}$message"
+                    message = "${gitmoji.emoji}$textAfterUnicode$message"
                 }
-                selectionStart = gitmoji.emoji.length + (PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)?.length
-                        ?: 0)
+                selectionStart = gitmoji.emoji.length + (textAfterUnicode?.length ?: 0)
             } else {
                 message = if (codeRegex.containsMatchIn(message)) {
                     codeRegex.replace(message, gitmoji.code)

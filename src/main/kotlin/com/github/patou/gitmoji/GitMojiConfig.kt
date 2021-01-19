@@ -12,7 +12,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
     private var useUnicodeConfig: Boolean = false
-    private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_")
+    private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
     private var textAfterUnicodeConfig: String = " "
 
@@ -38,13 +38,17 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
             else -> textAfterUnicodeOptions[textAfterUnicode.selectedIndex]
         }
 
-        PropertiesComponent.getInstance(project).setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
-        PropertiesComponent.getInstance(project).setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
+        val projectInstance = PropertiesComponent.getInstance(project)
+        projectInstance.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
+        projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
     }
 
     override fun reset() {
-        useUnicodeConfig = PropertiesComponent.getInstance(project).getBoolean(CONFIG_USE_UNICODE, false)
-        textAfterUnicodeConfig = PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE, " ")
+        val propertiesComponent = PropertiesComponent.getInstance(project)
+
+        useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
+        textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
+
         useUnicode.isSelected = useUnicodeConfig
         textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
             -1 -> 0
@@ -52,7 +56,5 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         }
     }
 
-    override fun createComponent(): JComponent? = mainPanel
-
-
+    override fun createComponent(): JComponent = mainPanel
 }
