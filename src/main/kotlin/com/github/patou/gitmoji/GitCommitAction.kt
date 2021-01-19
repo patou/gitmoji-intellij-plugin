@@ -130,21 +130,17 @@ class GitCommitAction : AnAction() {
             if (useUnicode) {
                 var replaced = false
                 for (moji in gitmojis) {
-                    if (message.contains("${moji.emoji} ")) {
-                        message = message.replaceFirst("${moji.emoji} ", "${gitmoji.emoji} ")
-                        replaced = true
-                        break
-                    } else if (message.contains("${moji.emoji}(")) {
-                        // to support semantic-gitmoji commits like: ✨(frontend): new feature...
-                        message = message.replaceFirst("${moji.emoji}(", "${gitmoji.emoji}(")
+                    if (message.contains("${moji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}")) {
+                        message = message.replaceFirst("${moji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}", "${gitmoji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}")
                         replaced = true
                         break
                     }
                 }
                 if (!replaced) {
-                    message = "${gitmoji.emoji} $message"
+                    message = "${gitmoji.emoji}${PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)}$message"
                 }
-                selectionStart = gitmoji.emoji.length + 1
+                selectionStart = gitmoji.emoji.length + (PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)?.length
+                        ?: 0)
             } else {
                 message = if (codeRegex.containsMatchIn(message)) {
                     codeRegex.replace(message, gitmoji.code)
