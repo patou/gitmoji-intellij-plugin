@@ -134,6 +134,11 @@ class GitCommitAction : AnAction() {
                         message = message.replaceFirst("${moji.emoji} ", "${gitmoji.emoji} ")
                         replaced = true
                         break
+                    } else if (message.contains("${moji.emoji}(")) {
+                        // to support semantic-gitmoji commits like: ✨(frontend): new feature...
+                        message = message.replaceFirst("${moji.emoji}(", "${gitmoji.emoji}(")
+                        replaced = true
+                        break
                     }
                 }
                 if (!replaced) {
