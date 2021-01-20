@@ -45,7 +45,7 @@ class GitCommitAction : AnAction() {
         loadGitmojiFromHTTP()
     }
 
-    val codeRegex = Regex(":[a-z0-9_]+:")
+    val regexPattern = ":[a-z0-9_]+:"
 
 
     override fun actionPerformed(e: AnActionEvent) {
@@ -124,36 +124,40 @@ class GitCommitAction : AnAction() {
         groupId: Any
     ) =
         CommandProcessor.getInstance().executeCommand(project, {
-            val useUnicode = PropertiesComponent.getInstance(project).getBoolean(CONFIG_USE_UNICODE, false)
+            val projectInstance = PropertiesComponent.getInstance(project)
+            val useUnicode = projectInstance.getBoolean(CONFIG_USE_UNICODE, false)
             var message = commitMessage.editorField.text
             val selectionStart: Int
+            val textAfterUnicode = projectInstance.getValue(CONFIG_AFTER_UNICODE, " ")
             if (useUnicode) {
                 var replaced = false
+
                 for (moji in gitmojis) {
-                    if (message.contains("${moji.emoji} ")) {
-                        message = message.replaceFirst("${moji.emoji} ", "${gitmoji.emoji} ")
+                    if (message.contains("${moji.emoji}$textAfterUnicode")) {
+                        message = message.replaceFirst("${moji.emoji}$textAfterUnicode", "${gitmoji.emoji}$textAfterUnicode")
                         replaced = true
                         break
                     }
                 }
                 if (!replaced) {
-                    message = "${gitmoji.emoji} $message"
+                    message = "${gitmoji.emoji}$textAfterUnicode$message"
                 }
-                selectionStart = gitmoji.emoji.length + 1
+                selectionStart = gitmoji.emoji.length + textAfterUnicode.length
             } else {
-                message = if (codeRegex.containsMatchIn(message)) {
-                    codeRegex.replace(message, gitmoji.code)
+                val actualRegex = Regex(regexPattern + Regex.escape(textAfterUnicode))
+                message = if (actualRegex.containsMatchIn(message)) {
+                    actualRegex.replace(message, gitmoji.code + textAfterUnicode)
                 } else {
-                    gitmoji.code + " " + message
+                    gitmoji.code + textAfterUnicode + message
                 }
-                selectionStart = gitmoji.code.length + 1
+                selectionStart = gitmoji.code.length + textAfterUnicode.length
             }
             commitMessage.setCommitMessage(message)
             commitMessage.editorField.selectAll()
             commitMessage.editorField.caretModel.removeSecondaryCarets()
             commitMessage.editorField.caretModel.primaryCaret.setSelection(
                 selectionStart,
-                commitMessage.editorField.document.getTextLength(),
+                commitMessage.editorField.document.textLength,
                 false
             )
         }, "", groupId, commitMessage.editorField.document)

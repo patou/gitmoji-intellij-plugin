@@ -3,35 +3,58 @@ package com.github.patou.gitmoji
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
-import java.awt.BorderLayout
-import javax.swing.JCheckBox
-import javax.swing.JComponent
-import javax.swing.JPanel
+import com.intellij.openapi.ui.ComboBox
+import java.awt.FlowLayout
+import java.awt.GridLayout
+import javax.swing.*
 
-class GitMojiConfig constructor(val project: Project) : SearchableConfigurable {
+class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
-    private var useUnicodeConfig : Boolean = false
-    override fun isModified(): Boolean = isModified(useUnicode, useUnicodeConfig)
+    private var useUnicodeConfig: Boolean = false
+    private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
+    private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
+    private var textAfterUnicodeConfig: String = " "
+
+    override fun isModified(): Boolean = isModified(useUnicode, useUnicodeConfig) || isModified(textAfterUnicode, textAfterUnicodeConfig)
     override fun getDisplayName(): String = "Gitmoji"
     override fun getId(): String = "com.github.patou.gitmoji.config"
-    init
-    {
-        mainPanel = JPanel(BorderLayout())
-        mainPanel.add(BorderLayout.NORTH, useUnicode)
+
+    init {
+        val flow = GridLayout(20, 2)
+        mainPanel = JPanel(flow)
+        mainPanel.add(useUnicode, null)
+        val textAfterUnicodePanel = JPanel(FlowLayout(FlowLayout.LEADING))
+        textAfterUnicodePanel.add(JLabel("Character after inserted emoji ✨"))
+        textAfterUnicodePanel.add(textAfterUnicode, null)
+        mainPanel.add(textAfterUnicodePanel)
     }
 
     override fun apply() {
         useUnicodeConfig = useUnicode.isSelected
-        PropertiesComponent.getInstance(project).setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
+        textAfterUnicodeConfig = when (textAfterUnicode.selectedIndex) {
+            0 -> ""
+            1 -> " "
+            else -> textAfterUnicodeOptions[textAfterUnicode.selectedIndex]
+        }
+
+        val projectInstance = PropertiesComponent.getInstance(project)
+        projectInstance.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
+        projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
     }
 
     override fun reset() {
-        useUnicodeConfig = PropertiesComponent.getInstance(project).getBoolean(CONFIG_USE_UNICODE, false)
+        val propertiesComponent = PropertiesComponent.getInstance(project)
+
+        useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
+        textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
+
         useUnicode.isSelected = useUnicodeConfig
+        textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
+            -1 -> 1
+            else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
+        }
     }
 
-    override fun createComponent(): JComponent? = mainPanel
-
-
+    override fun createComponent(): JComponent = mainPanel
 }
