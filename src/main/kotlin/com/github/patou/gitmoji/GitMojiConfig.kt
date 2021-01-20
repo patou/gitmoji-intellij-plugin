@@ -51,7 +51,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
 
         useUnicode.isSelected = useUnicodeConfig
         textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
-            -1 -> 0
+            -1 -> 1
             else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
         }
     }
