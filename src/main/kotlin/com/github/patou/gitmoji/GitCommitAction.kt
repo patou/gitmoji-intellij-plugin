@@ -129,7 +129,7 @@ class GitCommitAction : AnAction() {
             val selectionStart: Int
             if (useUnicode) {
                 var replaced = false
-                val textAfterUnicode = PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE)
+                val textAfterUnicode = PropertiesComponent.getInstance(project).getValue(CONFIG_AFTER_UNICODE, " ")
 
                 for (moji in gitmojis) {
                     if (message.contains("${moji.emoji}$textAfterUnicode")) {
