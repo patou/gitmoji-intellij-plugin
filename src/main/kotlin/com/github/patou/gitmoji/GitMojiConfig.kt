@@ -12,7 +12,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
     private var useUnicodeConfig: Boolean = false
-    private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[")
+    private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
     private var textAfterUnicodeConfig: String = " "
 
