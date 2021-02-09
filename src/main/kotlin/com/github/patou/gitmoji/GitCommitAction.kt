@@ -64,6 +64,8 @@ class GitCommitAction : AnAction() {
         var selectedMessage: GitmojiData? = null
         val rightMargin = getSubjectRightMargin(project)
         val previewCommandGroup = sentinel("Preview Commit Message")
+        val projectInstance = PropertiesComponent.getInstance(project)
+        val displayEmoji = projectInstance.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType()).equals("emoji")
 
         return JBPopupFactory.getInstance().createPopupChooserBuilder(listGitmoji)
             .setFont(commitMessage.editorField.editor?.colorsScheme?.getFont(EditorFontType.PLAIN))
@@ -82,7 +84,13 @@ class GitCommitAction : AnAction() {
                     selected: Boolean,
                     hasFocus: Boolean
                 ) {
-                    append("${value.emoji}\t${value.code} ", SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
+                    if (displayEmoji) {
+                        append(" ${value.emoji}")
+                    }
+                    else {
+                        icon = value.getIcon();
+                    }
+                    append("\t${value.code} ", SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
                     appendTextPadding(5)
                     append(first(convertLineSeparators(value.description, RETURN_SYMBOL), rightMargin, false))
                     applySpeedSearchHighlighting(list, this, true, selected)
@@ -129,6 +137,7 @@ class GitCommitAction : AnAction() {
         CommandProcessor.getInstance().executeCommand(project, {
             val projectInstance = PropertiesComponent.getInstance(project)
             val useUnicode = projectInstance.getBoolean(CONFIG_USE_UNICODE, false)
+
             var message = commitMessage.editorField.text
             val selectionStart: Int
             val textAfterUnicode = projectInstance.getValue(CONFIG_AFTER_UNICODE, " ")
