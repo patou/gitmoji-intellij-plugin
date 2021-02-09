@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.patou'
-version '1.6.0'
+version '1.7.0'
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -23,6 +23,14 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+        <p>
+            <h4>1.7.0</h4>
+            <ul>
+                <li>Option for choose the character after the emoji (space, :, -, _, (, [ ) thanks to @rubenvitt</li>
+                <li>Option to display list with emoji or icon (Bug in IntelliJ Windows who not display emoji on list)</li>
+                <li>Icon is now accessible when the IDE index</li>
+            </ul>
+        </p>
         <p>
             <h4>1.6.0</h4>
             <ul>
