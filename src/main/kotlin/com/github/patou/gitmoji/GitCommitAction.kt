@@ -47,6 +47,9 @@ class GitCommitAction : AnAction() {
 
     val regexPattern = ":[a-z0-9_]+:"
 
+    override fun isDumbAware(): Boolean {
+        return true
+    }
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project!!
