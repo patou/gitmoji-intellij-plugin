@@ -7,7 +7,7 @@ class Gitmojis(val gitmojis: List<Gitmoji>) {
 
     companion object {
         fun defaultDisplayType(): String {
-           return if (SystemInfo.isWindows) "icon" else "emoji"
+            return if (SystemInfo.isWindows) "icon" else "emoji"
         }
     }
 }

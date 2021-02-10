@@ -8,14 +8,19 @@ const val CONFIG_DISPLAY_ICON: String = "com.github.patou.gitmoji.display-icon"
 const val CONFIG_AFTER_UNICODE: String = "com.github.patou.gitmoji.text-after-unicode"
 
 data class GitmojiData(val code: String, val emoji: String, val description: String) {
-    private lateinit var _icon : Icon
+    private lateinit var _icon: Icon
 
-    public fun getIcon(): Icon {
+    fun getIcon(): Icon {
         if (!this::_icon.isInitialized) {
-            try {
-                _icon = IconLoader.findIcon("/icons/gitmoji/" + code.replace(":", "") + ".png", true)!!
+            _icon = try {
+                IconLoader.findIcon(
+                    "/icons/gitmoji/" + code.replace(":", "") + ".png",
+                    GitmojiData::class.java,
+                    false,
+                    true
+                )!!
             } catch (e: Exception) {
-                _icon = IconLoader.getIcon("/icons/gitmoji/anguished.png")
+                IconLoader.getIcon("/icons/gitmoji/anguished.png", GitmojiData::class.java)
             }
         }
         return _icon

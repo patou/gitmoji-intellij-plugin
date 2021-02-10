@@ -4,22 +4,30 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
-import com.intellij.openapi.util.SystemInfo
 import java.awt.FlowLayout
 import java.awt.GridLayout
-import javax.swing.*
+import javax.swing.JCheckBox
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
 
 class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
-    private val displayEmoji = JCheckBox("Display emoji instead of icon in list (Bug in IntelliJ Windows or emoji in black and white)")
+    private val displayEmoji =
+        JCheckBox("Display emoji instead of icon in list (Bug in IntelliJ Windows or emoji in black and white)")
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
     private var textAfterUnicodeConfig: String = " "
 
-    override fun isModified(): Boolean =  isModified(displayEmoji, displayEmojiConfig.equals("emoji")) || isModified(useUnicode, useUnicodeConfig) || isModified(textAfterUnicode, textAfterUnicodeConfig)
+    override fun isModified(): Boolean =
+        isModified(displayEmoji, displayEmojiConfig == "emoji") || isModified(
+            useUnicode,
+            useUnicodeConfig
+        ) || isModified(textAfterUnicode, textAfterUnicodeConfig)
+
     override fun getDisplayName(): String = "Gitmoji"
     override fun getId(): String = "com.github.patou.gitmoji.config"
 
@@ -52,16 +60,18 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     override fun reset() {
         val propertiesComponent = PropertiesComponent.getInstance(project)
 
-        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
+        displayEmojiConfig =
+            propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
         useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
         textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
 
-        displayEmoji.isSelected = displayEmojiConfig.equals("emoji")
+        displayEmoji.isSelected = displayEmojiConfig == "emoji"
         useUnicode.isSelected = useUnicodeConfig
-        textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
-            -1 -> 1
-            else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
-        }
+        textAfterUnicode.selectedIndex =
+            when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
+                -1 -> 1
+                else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
+            }
     }
 
     override fun createComponent(): JComponent = mainPanel

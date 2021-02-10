@@ -37,7 +37,7 @@ import javax.swing.JList
 import javax.swing.ListSelectionModel
 
 class GitCommitAction : AnAction() {
-    val gitmojis = ArrayList<GitmojiData>()
+    private val gitmojis = ArrayList<GitmojiData>()
 
 
     init {
@@ -45,7 +45,7 @@ class GitCommitAction : AnAction() {
         loadGitmojiFromHTTP()
     }
 
-    val regexPattern = ":[a-z0-9_]+:"
+    private val regexPattern = ":[a-z0-9_]+:"
 
     override fun isDumbAware(): Boolean {
         return true
@@ -59,13 +59,18 @@ class GitCommitAction : AnAction() {
             .showInBestPositionFor(e.dataContext)
     }
 
-    private fun createPopup(project: Project, commitMessage: CommitMessage, listGitmoji: List<GitmojiData>): JBPopup {
+    private fun createPopup(
+        project: Project,
+        commitMessage: CommitMessage,
+        listGitmoji: List<GitmojiData>
+    ): JBPopup {
         var chosenMessage: GitmojiData? = null
         var selectedMessage: GitmojiData? = null
         val rightMargin = getSubjectRightMargin(project)
         val previewCommandGroup = sentinel("Preview Commit Message")
         val projectInstance = PropertiesComponent.getInstance(project)
-        val displayEmoji = projectInstance.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType()).equals("emoji")
+        val displayEmoji =
+            projectInstance.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType()) == "emoji"
 
         return JBPopupFactory.getInstance().createPopupChooserBuilder(listGitmoji)
             .setFont(commitMessage.editorField.editor?.colorsScheme?.getFont(EditorFontType.PLAIN))
@@ -86,21 +91,28 @@ class GitCommitAction : AnAction() {
                 ) {
                     if (displayEmoji) {
                         append(" ${value.emoji}")
-                    }
-                    else {
-                        icon = value.getIcon();
+                    } else {
+                        icon = value.getIcon()
                     }
                     append("\t${value.code} ", SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
                     appendTextPadding(5)
-                    append(first(convertLineSeparators(value.description, RETURN_SYMBOL), rightMargin, false))
+                    append(
+                        first(
+                            convertLineSeparators(value.description, RETURN_SYMBOL),
+                            rightMargin,
+                            false
+                        )
+                    )
                     applySpeedSearchHighlighting(list, this, true, selected)
                 }
             })
             .addListener(object : JBPopupListener {
                 override fun beforeShown(event: LightweightWindowEvent) {
                     val popup = event.asPopup()
-                    val relativePoint = RelativePoint(commitMessage.editorField, Point(0, -scale(3)))
-                    val screenPoint = Point(relativePoint.screenPoint).apply { translate(0, -popup.size.height) }
+                    val relativePoint =
+                        RelativePoint(commitMessage.editorField, Point(0, -scale(3)))
+                    val screenPoint =
+                        Point(relativePoint.screenPoint).apply { translate(0, -popup.size.height) }
 
                     popup.setLocation(screenPoint)
                 }
@@ -109,7 +121,12 @@ class GitCommitAction : AnAction() {
                     // IDEA-195094 Regression: New CTRL-E in "commit changes" breaks keyboard shortcuts
                     commitMessage.editorField.requestFocusInWindow()
                     // Use invokeLater() as onClosed() is called before callback from setItemChosenCallback
-                    getApplication().invokeLater { chosenMessage ?: cancelPreview(project, commitMessage) }
+                    getApplication().invokeLater {
+                        chosenMessage ?: cancelPreview(
+                            project,
+                            commitMessage
+                        )
+                    }
                 }
             })
             .setNamerForFiltering { "${it.code} ${it.description}" }
@@ -120,7 +137,8 @@ class GitCommitAction : AnAction() {
                     when (dataId) {
                         // default list action does not work as "CopyAction" is invoked first, but with other copy provider
                         PlatformDataKeys.COPY_PROVIDER.name -> object : TextCopyProvider() {
-                            override fun getTextLinesToCopy() = listOfNotNull(selectedMessage?.code).nullize()
+                            override fun getTextLinesToCopy() =
+                                listOfNotNull(selectedMessage?.code).nullize()
                         }
                         else -> null
                     }
@@ -146,7 +164,10 @@ class GitCommitAction : AnAction() {
 
                 for (moji in gitmojis) {
                     if (message.contains("${moji.emoji}$textAfterUnicode")) {
-                        message = message.replaceFirst("${moji.emoji}$textAfterUnicode", "${gitmoji.emoji}$textAfterUnicode")
+                        message = message.replaceFirst(
+                            "${moji.emoji}$textAfterUnicode",
+                            "${gitmoji.emoji}$textAfterUnicode"
+                        )
                         replaced = true
                         break
                     }
@@ -176,12 +197,15 @@ class GitCommitAction : AnAction() {
 
     private fun cancelPreview(project: Project, commitMessage: CommitMessage) {
         val manager = UndoManager.getInstance(project)
-        val fileEditor = commitMessage.editorField.editor?.let { TextEditorProvider.getInstance().getTextEditor(it) }
+        val fileEditor = commitMessage.editorField.editor?.let {
+            TextEditorProvider.getInstance().getTextEditor(it)
+        }
 
         if (manager.isUndoAvailable(fileEditor)) manager.undo(fileEditor)
     }
 
-    private fun getCommitMessage(e: AnActionEvent) = e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL) as? CommitMessage
+    private fun getCommitMessage(e: AnActionEvent) =
+        e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL) as? CommitMessage
 
     private fun loadGitmojiFromHTTP() {
         val client = OkHttpClient()
@@ -215,8 +239,8 @@ class GitCommitAction : AnAction() {
 
     private fun loadGitmoji(text: String) {
         Gson().fromJson(text, Gitmojis::class.java).also {
-            it.gitmojis.forEach {
-                gitmojis.add(GitmojiData(it.code, it.emoji, it.description))
+            it.gitmojis.forEach { gitmoji ->
+                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmoji.description))
             }
         }
     }
