@@ -1,5 +1,6 @@
 package com.github.patou.gitmoji
 
+import com.github.patou.gitmoji.Gitmojis.Companion.insertAt
 import com.google.gson.Gson
 import com.intellij.ide.TextCopyProvider
 import com.intellij.ide.util.PropertiesComponent
@@ -71,6 +72,8 @@ class GitCommitAction : AnAction() {
         val projectInstance = PropertiesComponent.getInstance(project)
         val displayEmoji =
             projectInstance.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType()) == "emoji"
+        var currentCommitMessage = commitMessage.editorField.text
+        var currentOffset = commitMessage.editorField.caretModel.offset;
 
         return JBPopupFactory.getInstance().createPopupChooserBuilder(listGitmoji)
             .setFont(commitMessage.editorField.editor?.colorsScheme?.getFont(EditorFontType.PLAIN))
@@ -78,7 +81,7 @@ class GitCommitAction : AnAction() {
             .setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
             .setItemSelectedCallback {
                 selectedMessage = it
-                it?.let { preview(project, commitMessage, it, previewCommandGroup) }
+                it?.let { preview(project, commitMessage, it, currentCommitMessage, currentOffset, previewCommandGroup) }
             }
             .setItemChosenCallback { chosenMessage = it }
             .setRenderer(object : ColoredListCellRenderer<GitmojiData>() {
@@ -150,49 +153,56 @@ class GitCommitAction : AnAction() {
         project: Project,
         commitMessage: CommitMessage,
         gitmoji: GitmojiData,
+        currentCommitMessage: String,
+        currentOffset: Int,
         groupId: Any
     ) =
         CommandProcessor.getInstance().executeCommand(project, {
             val projectInstance = PropertiesComponent.getInstance(project)
             val useUnicode = projectInstance.getBoolean(CONFIG_USE_UNICODE, false)
+            val insertInCarretPosition = projectInstance.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
 
-            var message = commitMessage.editorField.text
-            val selectionStart: Int
+            var message = currentCommitMessage // commitMessage.editorField.text
+            val insertPosition = if (insertInCarretPosition) currentOffset else 0
             val textAfterUnicode = projectInstance.getValue(CONFIG_AFTER_UNICODE, " ")
-            if (useUnicode) {
-                var replaced = false
-
-                for (moji in gitmojis) {
-                    if (message.contains("${moji.emoji}$textAfterUnicode")) {
-                        message = message.replaceFirst(
-                            "${moji.emoji}$textAfterUnicode",
-                            "${gitmoji.emoji}$textAfterUnicode"
-                        )
+            val selectedGitmoji = if (useUnicode) "${gitmoji.emoji}$textAfterUnicode" else "${gitmoji.code}$textAfterUnicode"
+            var replaced = false
+            if (!insertInCarretPosition) {
+                if (useUnicode) {
+                    for (moji in gitmojis) {
+                        if (message.contains("${moji.emoji}$textAfterUnicode")) {
+                            message = message.replaceFirst(
+                                "${moji.emoji}$textAfterUnicode",
+                                selectedGitmoji
+                            )
+                            replaced = true
+                            break
+                        }
+                    }
+                } else {
+                    val actualRegex = Regex(regexPattern + Regex.escape(textAfterUnicode))
+                    if (actualRegex.containsMatchIn(message)) {
+                        message = actualRegex.replace(message, selectedGitmoji)
                         replaced = true
-                        break
                     }
                 }
-                if (!replaced) {
-                    message = "${gitmoji.emoji}$textAfterUnicode$message"
-                }
-                selectionStart = gitmoji.emoji.length + textAfterUnicode.length
-            } else {
-                val actualRegex = Regex(regexPattern + Regex.escape(textAfterUnicode))
-                message = if (actualRegex.containsMatchIn(message)) {
-                    actualRegex.replace(message, gitmoji.code + textAfterUnicode)
-                } else {
-                    gitmoji.code + textAfterUnicode + message
-                }
-                selectionStart = gitmoji.code.length + textAfterUnicode.length
+            }
+            if (!replaced) {
+                message = insertAt(message, insertPosition, selectedGitmoji)
             }
             commitMessage.setCommitMessage(message)
-            commitMessage.editorField.selectAll()
-            commitMessage.editorField.caretModel.removeSecondaryCarets()
-            commitMessage.editorField.caretModel.primaryCaret.setSelection(
-                selectionStart,
-                commitMessage.editorField.document.textLength,
-                false
-            )
+            val startPosition = insertPosition + selectedGitmoji.length
+            if (!insertInCarretPosition) {
+                commitMessage.editorField.selectAll()
+                commitMessage.editorField.caretModel.removeSecondaryCarets()
+                commitMessage.editorField.caretModel.primaryCaret.setSelection(
+                    startPosition,
+                    commitMessage.editorField.document.textLength,
+                    false
+                )
+            }
+            if (currentOffset < startPosition)
+                commitMessage.editorField.caretModel.primaryCaret.moveToOffset(startPosition);
         }, "", groupId, commitMessage.editorField.document)
 
     private fun cancelPreview(project: Project, commitMessage: CommitMessage) {

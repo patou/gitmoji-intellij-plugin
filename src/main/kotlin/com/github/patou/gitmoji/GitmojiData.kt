@@ -6,6 +6,7 @@ import javax.swing.Icon
 const val CONFIG_USE_UNICODE: String = "com.github.patou.gitmoji.use-unicode"
 const val CONFIG_DISPLAY_ICON: String = "com.github.patou.gitmoji.display-icon"
 const val CONFIG_AFTER_UNICODE: String = "com.github.patou.gitmoji.text-after-unicode"
+const val CONFIG_INSERT_IN_CURSOR_POSITION: String = "com.github.patou.gitmoji.insert-in-cursor-position"
 
 data class GitmojiData(val code: String, val emoji: String, val description: String) {
     private lateinit var _icon: Icon
