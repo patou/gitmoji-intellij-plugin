@@ -208,7 +208,7 @@ class GitCommitAction : AnAction() {
         e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL) as? CommitMessage
 
     private fun loadGitmojiFromHTTP() {
-        val client = OkHttpClient()
+        val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Builder()
             .url("https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json")
             .build()
