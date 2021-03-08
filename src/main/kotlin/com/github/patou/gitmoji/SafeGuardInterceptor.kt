@@ -5,7 +5,7 @@ import okhttp3.Response
 import java.io.IOException
 
 /**
- * 对于Interceptor的intercept中可能出现的Throwable包裹成IOExceptionWrapper，转成网络请求失败，而不是应用崩溃
+ * For the throwable wrapped in Interceptor's intercept, IOExceptionWrapper, transfer to network requests fail, not application crash
  * @author gclm
  */
 class SafeGuardInterceptor : Interceptor {
@@ -19,6 +19,6 @@ class SafeGuardInterceptor : Interceptor {
 }
 
 /**
- * 将chain.proceed处理中发生的Throwable包装成IOExceptionWrapper
+ * Packaging the throwable in chain.proceed processing into IOExceptionWrapper
  */
 class IOExceptionWrapper(message: String?, cause: Throwable?) : IOException(message, cause)
