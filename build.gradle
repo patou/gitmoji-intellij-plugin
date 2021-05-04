@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.patou'
-version '1.7.0'
+version '1.8.0'
 
 repositories {
     mavenCentral()
@@ -23,6 +23,12 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+        <p>
+            <h4>1.8.0</h4>
+            <ul>
+                <li>Option for insert emoji in place of the cursor instead of the begin</li>
+            </ul>
+        </p>
         <p>
             <h4>1.7.0</h4>
             <ul>
@@ -75,4 +81,5 @@ patchPluginXml {
 }
 publishPlugin {
     token intellijPublishToken
+    channels 'beta'
 }
