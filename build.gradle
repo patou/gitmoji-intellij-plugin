@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.patou'
-version '1.8.0'
+version '1.8.1'
 
 repositories {
     mavenCentral()
@@ -23,6 +23,13 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+        <p>
+            <h4>1.8.1</h4>
+            <ul>
+                <li>Fix NPE in the plugin</li>
+                <li>Update fallback gitmoji.json</li>
+            </ul>
+        </p>
         <p>
             <h4>1.8.0</h4>
             <ul>
@@ -81,5 +88,4 @@ patchPluginXml {
 }
 publishPlugin {
     token intellijPublishToken
-    channels 'beta'
 }
