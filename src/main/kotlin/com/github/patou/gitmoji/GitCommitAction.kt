@@ -52,12 +52,16 @@ class GitCommitAction : AnAction() {
         return true
     }
 
-    override fun actionPerformed(e: AnActionEvent) {
-        val project = e.project!!
-        val commitMessage = getCommitMessage(e)!!
+    override fun actionPerformed(actionEvent: AnActionEvent) {
+        val project = actionEvent.project
+        val commitMessage = getCommitMessage(actionEvent)
 
-        createPopup(project, commitMessage, gitmojis)
-            .showInBestPositionFor(e.dataContext)
+        when {
+            commitMessage != null && project != null -> {
+                createPopup(project, commitMessage, gitmojis)
+                    .showInBestPositionFor(actionEvent.dataContext)
+            }
+        }
     }
 
     private fun createPopup(
@@ -72,8 +76,8 @@ class GitCommitAction : AnAction() {
         val projectInstance = PropertiesComponent.getInstance(project)
         val displayEmoji =
             projectInstance.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType()) == "emoji"
-        var currentCommitMessage = commitMessage.editorField.text
-        var currentOffset = commitMessage.editorField.caretModel.offset;
+        val currentCommitMessage = commitMessage.editorField.text
+        val currentOffset = commitMessage.editorField.caretModel.offset
 
         return JBPopupFactory.getInstance().createPopupChooserBuilder(listGitmoji)
             .setFont(commitMessage.editorField.editor?.colorsScheme?.getFont(EditorFontType.PLAIN))
@@ -202,7 +206,7 @@ class GitCommitAction : AnAction() {
                 )
             }
             if (currentOffset < startPosition)
-                commitMessage.editorField.caretModel.primaryCaret.moveToOffset(startPosition);
+                commitMessage.editorField.caretModel.primaryCaret.moveToOffset(startPosition)
         }, "", groupId, commitMessage.editorField.document)
 
     private fun cancelPreview(project: Project, commitMessage: CommitMessage) {
