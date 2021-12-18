@@ -4,6 +4,7 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.util.Comparing
 import java.awt.FlowLayout
 import java.awt.GridLayout
 import javax.swing.JCheckBox
@@ -30,6 +31,10 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
                 isModified(useUnicode, useUnicodeConfig) ||
                 isModified(textAfterUnicode, textAfterUnicodeConfig) ||
                 isModified(insertInCursorPosition, insertInCursorPositionConfig)
+
+    private fun isModified(comboBox: ComboBox<String>, value: String): Boolean {
+        return !Comparing.equal(comboBox.selectedItem, value)
+    }
 
     override fun getDisplayName(): String = "Gitmoji"
     override fun getId(): String = "com.github.patou.gitmoji.config"
