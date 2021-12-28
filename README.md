@@ -1,7 +1,11 @@
 # Gitmoji Plus: Commit Button
 
+<!-- Plugin description -->
 Add a gitmoji emoticon in your commits to make them sexier!
 This plug-in will help you to choose and add the gitmoji, via a button in the Commit window, among a predefined list of emoticons coming from [reference commit rules.](https://gitmoji.carloscuesta.me/)
+
+<img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-button.png"/>
+<img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-list.png"/>
 
 ## Features :
 
@@ -11,7 +15,8 @@ This plug-in will help you to choose and add the gitmoji, via a button in the Co
 * Shortcut to open the list : ctrl alt g (or cmd alt g on mac)
 * Load the list of gitmoji on startup from the repos of gitmoji (fallback to a local list if error).
 
-See the [gitmoji website](https://gitmoji.carloscuesta.me/) for have the list of Emoji and their signification.
+See the [gitmoji website](https://gitmoji.dev/) for have the list of Emoji and their signification.
+<!-- Plugin description end -->
 
 ![Button to add gitmoji](screenshot/gitmoji-button.png)
 ![List to choose gitmoji](screenshot/gitmoji-plugin.png)
@@ -46,4 +51,4 @@ Execute the publishPlugin gradle task
 ## Inspiration plugin
 
 This plugin was inspired from the plugin created by @biezhi : https://github.com/biezhi/gitmoji-plugin.
-Thanks for is works.
+Thanks for his works.
