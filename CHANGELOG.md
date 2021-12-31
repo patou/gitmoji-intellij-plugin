@@ -3,6 +3,8 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+
+## [1.9.1]
 - Update plugin name problem on windows installation
 
 ## 1.9.0
