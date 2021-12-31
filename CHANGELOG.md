@@ -2,6 +2,9 @@
 
 # gitmoji-intellij-plugin changelog
 
+## [Unreleased]
+- Update plugin name problem on windows installation
+
 ## 1.9.0
 - Update plugin to intellij version 2021.3 thanks to @HwanChang
 - Update projet to last intellij plugin
