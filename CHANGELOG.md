@@ -3,6 +3,7 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Remove buildUntil version to allow all futur intellij versions.
 
 ## [1.9.1]
 - Update plugin name problem on windows installation
