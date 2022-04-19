@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 - Update to intellij version 2022.1
+- Update to last intellij plugin template version
 
 ## [1.9.1]
 - Update plugin name problem on windows installation
