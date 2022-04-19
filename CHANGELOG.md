@@ -3,6 +3,8 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+
+## [1.10.0]
 - Update to intellij version 2022.1
 - Update to last intellij plugin template version
 
