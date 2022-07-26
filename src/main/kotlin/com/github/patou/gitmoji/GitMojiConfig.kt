@@ -5,10 +5,8 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.Comparing
-import com.intellij.refactoring.suggested.main
 import java.awt.FlowLayout
 import java.awt.GridLayout
-import javax.swing.JButton
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel
@@ -64,7 +62,6 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         mainPanel.add(textAfterUnicodePanel)
         previewGitCommitMessage.isEditable = false
         mainPanel.add(JLabel("Preview"))
-        mainPanel.add(button)
         mainPanel.add(previewGitCommitMessage)
     }
 
