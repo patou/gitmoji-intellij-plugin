@@ -5,12 +5,15 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.Comparing
+import com.intellij.refactoring.suggested.main
 import java.awt.FlowLayout
 import java.awt.GridLayout
+import javax.swing.JButton
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
+import javax.swing.JTextArea
 
 class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
@@ -21,6 +24,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         JCheckBox("Insert the emoji in the cursor location")
     private val includeGitMojiDescription =
         JCheckBox("Include gitmoji description")
+    private val previewGitCommitMessage = JTextArea(2, 80)
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private var insertInCursorPositionConfig: Boolean = false
@@ -30,6 +34,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     private var textAfterUnicodeConfig: String = " "
 
     override fun isModified(): Boolean =
+                previewCommit() &&
                 isModified(displayEmoji, displayEmojiConfig == "emoji") ||
                 isModified(useUnicode, useUnicodeConfig) ||
                 isModified(textAfterUnicode, textAfterUnicodeConfig) ||
@@ -45,6 +50,9 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
 
     init {
         val flow = GridLayout(20, 2)
+        useUnicode.addChangeListener { previewCommit() }
+        insertInCursorPosition.addChangeListener { previewCommit() }
+        includeGitMojiDescription.addChangeListener { previewCommit() }
         mainPanel = JPanel(flow)
         mainPanel.add(displayEmoji, null)
         mainPanel.add(useUnicode, null)
@@ -54,6 +62,10 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         textAfterUnicodePanel.add(JLabel("Character after inserted emoji ✨"))
         textAfterUnicodePanel.add(textAfterUnicode, null)
         mainPanel.add(textAfterUnicodePanel)
+        previewGitCommitMessage.isEditable = false
+        mainPanel.add(JLabel("Preview"))
+        mainPanel.add(button)
+        mainPanel.add(previewGitCommitMessage)
     }
 
     override fun apply() {
@@ -73,8 +85,8 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         projectInstance.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
         projectInstance.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
         projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
+        previewCommit()
     }
-
     override fun reset() {
         val propertiesComponent = PropertiesComponent.getInstance(project)
 
@@ -94,6 +106,31 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
                 -1 -> if (textAfterUnicodeConfig.equals(" ")) 1 else 0
                 else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
             }
+        previewCommit()
+    }
+
+    private fun previewCommit():Boolean {
+        var message = ""
+        if (insertInCursorPositionConfig) {
+            message += "Commit message|"
+        }
+        if (useUnicodeConfig) {
+            message += "✨"
+        }
+        else {
+            message += ":sparkles:"
+        }
+        message += textAfterUnicodeConfig
+        val selectionStart = message.length
+        if (includeGitMojiDescriptionConfig) {
+            message += "Introduce new features."
+        }
+        else if (!insertInCursorPositionConfig) {
+            message += "Commit message"
+        }
+        previewGitCommitMessage.text = message
+        previewGitCommitMessage.select(selectionStart, message.length)
+        return true
     }
 
     override fun createComponent(): JComponent = mainPanel
