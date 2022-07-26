@@ -165,6 +165,7 @@ class GitCommitAction : AnAction() {
             val projectInstance = PropertiesComponent.getInstance(project)
             val useUnicode = projectInstance.getBoolean(CONFIG_USE_UNICODE, false)
             val insertInCarretPosition = projectInstance.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
+            val includeGitMojiDescription = projectInstance.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
 
             var message = currentCommitMessage // commitMessage.editorField.text
             val insertPosition = if (insertInCarretPosition) currentOffset else 0
@@ -194,8 +195,12 @@ class GitCommitAction : AnAction() {
             if (!replaced) {
                 message = insertAt(message, insertPosition, selectedGitmoji)
             }
-            commitMessage.setCommitMessage(message)
             val startPosition = insertPosition + selectedGitmoji.length
+            if (includeGitMojiDescription) {
+                message = message.substring(0, startPosition) + gitmoji.description
+            }
+            commitMessage.setCommitMessage(message)
+
             if (!insertInCarretPosition) {
                 commitMessage.editorField.selectAll()
                 commitMessage.editorField.caretModel.removeSecondaryCarets()
