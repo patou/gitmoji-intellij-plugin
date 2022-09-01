@@ -3,6 +3,9 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Bug fix #34 Error when select the option nothing
+- Feature #27 Add new option for insert the gitmoji description in the commit
+
 
 ## [1.10.0]
 - Update to intellij version 2022.1
