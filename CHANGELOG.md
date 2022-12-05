@@ -3,6 +3,7 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Update to intellij 2022.2
 
 ## [1.11.0]
 - Bug fix #34 Error when select the option nothing
