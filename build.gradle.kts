@@ -7,7 +7,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.10.0"
     // Gradle Changelog Plugin
@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.10")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
 }
 
