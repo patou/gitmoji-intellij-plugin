@@ -3,6 +3,8 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Update gitmoji.json
+- Change the URL to download the gitmojis data.
 
 ## [1.11.1] - 2022-12-05
 - Update to intellij 2022.2
