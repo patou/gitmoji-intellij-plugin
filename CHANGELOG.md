@@ -3,6 +3,8 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Update to intellij 2023.2
+
 
 ## [1.12.1] - 2023-02-21
 - Update to intellij 2023.1
