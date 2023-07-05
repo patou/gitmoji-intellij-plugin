@@ -3,8 +3,9 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
-- Update to intellij 2023.2
 
+## [1.12.2] - 2023-07-05
+- Update to intellij 2023.2
 
 ## [1.12.1] - 2023-02-21
 - Update to intellij 2023.1
@@ -65,7 +66,8 @@
 ## [1.2.0]
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.1...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.2...HEAD
+[1.12.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.1...v1.12.2
 [1.12.1]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.0...v1.12.1
 [1.12.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.11.1...v1.12.0
 [1.11.1]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.11.0...v1.11.1
