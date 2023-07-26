@@ -1,6 +1,7 @@
 package com.github.patou.gitmoji
 
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
@@ -12,15 +13,13 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
+class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
     private val displayEmoji =
         JCheckBox("Display emoji instead of icon in list (Bug in IntelliJ Windows or emoji in black and white)")
-    private val insertInCursorPosition =
-        JCheckBox("Insert the emoji in the cursor location")
-    private val includeGitMojiDescription =
-        JCheckBox("Include gitmoji description")
+    private val insertInCursorPosition = JCheckBox("Insert the emoji in the cursor location")
+    private val includeGitMojiDescription = JCheckBox("Include gitmoji description")
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private var insertInCursorPositionConfig: Boolean = false
@@ -30,11 +29,13 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     private var textAfterUnicodeConfig: String = " "
 
     override fun isModified(): Boolean =
-                isModified(displayEmoji, displayEmojiConfig == "emoji") ||
-                isModified(useUnicode, useUnicodeConfig) ||
-                isModified(textAfterUnicode, textAfterUnicodeConfig) ||
-                isModified(insertInCursorPosition, insertInCursorPositionConfig) ||
-                isModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
+        Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") || Configurable.isCheckboxModified(
+            useUnicode,
+            useUnicodeConfig
+        ) || isModified(textAfterUnicode, textAfterUnicodeConfig) || Configurable.isCheckboxModified(
+            insertInCursorPosition,
+            insertInCursorPositionConfig
+        ) || Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
 
     private fun isModified(comboBox: ComboBox<String>, value: String): Boolean {
         return !Comparing.equal(comboBox.selectedItem, value)
@@ -78,8 +79,7 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     override fun reset() {
         val propertiesComponent = PropertiesComponent.getInstance(project)
 
-        displayEmojiConfig =
-            propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
+        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
         useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
         insertInCursorPositionConfig = propertiesComponent.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
         includeGitMojiDescriptionConfig = propertiesComponent.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
@@ -89,11 +89,10 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         useUnicode.isSelected = useUnicodeConfig
         insertInCursorPosition.isSelected = insertInCursorPositionConfig
         includeGitMojiDescription.isSelected = includeGitMojiDescriptionConfig
-        textAfterUnicode.selectedIndex =
-            when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
-                -1 -> if (textAfterUnicodeConfig.equals(" ")) 1 else 0
-                else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
-            }
+        textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
+            -1 -> if (textAfterUnicodeConfig.equals(" ")) 1 else 0
+            else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
+        }
     }
 
     override fun createComponent(): JComponent = mainPanel
