@@ -41,6 +41,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other"
-                             id="com.github.patou.gitmoji.config" displayName="Gitmoji"/>
+                             id="com.github.patou.gitmoji.config" displayName="Gitmoji Plus: Commit Button"/>
     </extensions>
 </idea-plugin>
