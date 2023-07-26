@@ -90,7 +90,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         insertInCursorPosition.isSelected = insertInCursorPositionConfig
         includeGitMojiDescription.isSelected = includeGitMojiDescriptionConfig
         textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
-            -1 -> if (textAfterUnicodeConfig.equals(" ")) 1 else 0
+            -1 -> if (textAfterUnicodeConfig == " ") 1 else 0
             else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
         }
     }
