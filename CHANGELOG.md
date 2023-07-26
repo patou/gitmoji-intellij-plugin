@@ -3,6 +3,8 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+
+## [1.13.0] - 2023-07-26
 - Fix the bug of Exception reporting when opening idea 2023.2
 - Change Method deprecated in Config
 - Update projet to last intellij plugin
@@ -69,7 +71,8 @@
 ## [1.2.0]
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.2...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.13.0...HEAD
+[1.13.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.2...v1.13.0
 [1.12.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.1...v1.12.2
 [1.12.1]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.0...v1.12.1
 [1.12.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.11.1...v1.12.0
