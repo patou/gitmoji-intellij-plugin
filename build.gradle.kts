@@ -18,6 +18,7 @@ version = properties("pluginVersion").get()
 
 // Configure project's dependencies
 repositories {
+    maven("https://www.jetbrains.com/intellij-repository/snapshots/")
     mavenCentral()
 }
 

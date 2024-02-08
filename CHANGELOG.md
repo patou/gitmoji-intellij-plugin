@@ -3,7 +3,7 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
-- Update to intellij 2023.4
+- Update to intellij 2024.1
 
 ## [1.13.0] - 2023-07-26
 - Fix the bug of Exception reporting when opening idea 2023.2
