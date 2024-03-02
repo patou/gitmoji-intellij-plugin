@@ -40,7 +40,6 @@ import javax.swing.ListSelectionModel
 class GitCommitAction : AnAction() {
     private val gitmojis = ArrayList<GitmojiData>()
 
-
     init {
         isEnabledInModalContext = true
         loadGitmojiFromHTTP()
@@ -55,7 +54,6 @@ class GitCommitAction : AnAction() {
     override fun actionPerformed(actionEvent: AnActionEvent) {
         val project = actionEvent.project
         val commitMessage = getCommitMessage(actionEvent)
-
         when {
             commitMessage != null && project != null -> {
                 createPopup(project, commitMessage, gitmojis)
@@ -227,28 +225,34 @@ class GitCommitAction : AnAction() {
         e.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL) as? CommitMessage
 
     private fun loadGitmojiFromHTTP() {
-        val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
-        val request: Request = Builder()
-            .url("https://gitmoji.dev/api/gitmojis")
-            .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                loadDefaultGitmoji()
-            }
+        val instance = PropertiesComponent.getInstance()
+        val value = instance.getValue(CONFIG_LANGUAGE, "en_US")
+        if (value == "en_US") {
+            val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
+            val request: Request = Builder()
+                    .url("https://gitmoji.dev/api/gitmojis")
+                    .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    loadDefaultGitmoji(value)
+                }
 
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) loadDefaultGitmoji()
-                    else {
-                        loadGitmoji(response.body!!.string())
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) loadDefaultGitmoji(value)
+                        else {
+                            loadGitmoji(response.body!!.string())
+                        }
                     }
                 }
-            }
-        })
+            })
+        } else {
+            loadDefaultGitmoji(value)
+        }
     }
 
-    private fun loadDefaultGitmoji() {
-        javaClass.getResourceAsStream("/gitmojis.json").use { inputStream ->
+    private fun loadDefaultGitmoji(value: String) {
+        javaClass.getResourceAsStream("/gitmojis-${value}.json").use { inputStream ->
             if (inputStream != null) {
                 val text = inputStream.bufferedReader().readText()
                 loadGitmoji(text)
@@ -263,4 +267,5 @@ class GitCommitAction : AnAction() {
             }
         }
     }
+
 }
