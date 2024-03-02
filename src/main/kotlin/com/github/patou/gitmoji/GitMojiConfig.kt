@@ -8,7 +8,6 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.Comparing
 import java.awt.FlowLayout
 import java.awt.GridLayout
-import java.io.File
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel
