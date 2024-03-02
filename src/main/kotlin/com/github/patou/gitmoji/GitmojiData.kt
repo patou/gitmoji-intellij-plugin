@@ -2,7 +2,6 @@ package com.github.patou.gitmoji
 
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
-import javax.xml.bind.annotation.XmlElementDecl.GLOBAL
 
 const val CONFIG_USE_UNICODE: String = "com.github.patou.gitmoji.use-unicode"
 const val CONFIG_DISPLAY_ICON: String = "com.github.patou.gitmoji.display-icon"
