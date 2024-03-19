@@ -26,10 +26,10 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private var includeGitMojiDescriptionConfig: Boolean = false
     private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
-    private val languageOptions = arrayOf("en_US", "zh_CN")
+    private val languageOptions = arrayOf("auto", "en_US", "zh_CN")
     private val languages = ComboBox(languageOptions)
     private var textAfterUnicodeConfig: String = " "
-    private var languagesConfig:String = "en_US"
+    private var languagesConfig:String = "auto"
 
     override fun isModified(): Boolean =
         Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") || Configurable.isCheckboxModified(
