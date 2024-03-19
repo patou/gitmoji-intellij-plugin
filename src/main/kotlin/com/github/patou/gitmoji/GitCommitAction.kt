@@ -32,6 +32,7 @@ import com.intellij.util.ui.JBUI.scale
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile.getSubjectRightMargin
 import okhttp3.*
 import okhttp3.Request.Builder
+import org.yaml.snakeyaml.Yaml
 import java.awt.Point
 import java.io.IOException
 import javax.swing.JList
@@ -226,33 +227,28 @@ class GitCommitAction : AnAction() {
 
     private fun loadGitmojiFromHTTP() {
         val instance = PropertiesComponent.getInstance()
-        val value = instance.getValue(CONFIG_LANGUAGE, "en_US")
-        if (value == "en_US") {
-            val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
-            val request: Request = Builder()
-                    .url("https://gitmoji.dev/api/gitmojis")
-                    .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    loadDefaultGitmoji(value)
-                }
+        val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
+        val request: Request = Builder()
+                .url("https://gitmoji.dev/api/gitmojis")
+                .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                loadDefaultGitmoji()
+            }
 
-                override fun onResponse(call: Call, response: Response) {
-                    response.use {
-                        if (!response.isSuccessful) loadDefaultGitmoji(value)
-                        else {
-                            loadGitmoji(response.body!!.string())
-                        }
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) loadDefaultGitmoji()
+                    else {
+                        loadGitmoji(response.body!!.string())
                     }
                 }
-            })
-        } else {
-            loadDefaultGitmoji(value)
-        }
+            }
+        })
     }
 
-    private fun loadDefaultGitmoji(value: String) {
-        javaClass.getResourceAsStream("/gitmojis-${value}.json").use { inputStream ->
+    private fun loadDefaultGitmoji() {
+        javaClass.getResourceAsStream("/gitmojis.json").use { inputStream ->
             if (inputStream != null) {
                 val text = inputStream.bufferedReader().readText()
                 loadGitmoji(text)
@@ -261,9 +257,10 @@ class GitCommitAction : AnAction() {
     }
 
     private fun loadGitmoji(text: String) {
+        val gitmojiLocale = GitmojiLocale()
         Gson().fromJson(text, Gitmojis::class.java).also {
             it.gitmojis.forEach { gitmoji ->
-                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmoji.description))
+                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmojiLocale.t(gitmoji.name, gitmoji.description)))
             }
         }
     }
