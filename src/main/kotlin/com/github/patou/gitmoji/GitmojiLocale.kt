@@ -1,6 +1,5 @@
 package com.github.patou.gitmoji
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.intellij.ide.util.PropertiesComponent
 import org.yaml.snakeyaml.Yaml
 import java.util.*

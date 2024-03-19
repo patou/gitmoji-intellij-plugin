@@ -32,7 +32,6 @@ import com.intellij.util.ui.JBUI.scale
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile.getSubjectRightMargin
 import okhttp3.*
 import okhttp3.Request.Builder
-import org.yaml.snakeyaml.Yaml
 import java.awt.Point
 import java.io.IOException
 import javax.swing.JList
