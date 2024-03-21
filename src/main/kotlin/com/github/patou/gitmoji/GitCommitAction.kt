@@ -256,9 +256,11 @@ class GitCommitAction : AnAction() {
 
     private fun loadGitmoji(text: String) {
         val gitmojiLocale = GitmojiLocale()
-        Gson().fromJson(text, Gitmojis::class.java).also {
-            it.gitmojis.forEach { gitmoji ->
-                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmojiLocale.t(gitmoji.name, gitmoji.description)))
+        gitmojiLocale.loadMap {
+            Gson().fromJson(text, Gitmojis::class.java).also {
+                it.gitmojis.forEach { gitmoji ->
+                    gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmojiLocale.t(gitmoji.name, gitmoji.description)))
+                }
             }
         }
     }
