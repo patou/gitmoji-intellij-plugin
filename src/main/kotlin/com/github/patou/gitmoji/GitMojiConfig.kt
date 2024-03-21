@@ -95,7 +95,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         insertInCursorPositionConfig = propertiesComponent.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
         includeGitMojiDescriptionConfig = propertiesComponent.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
         textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
-        languagesConfig = instance.getValue(CONFIG_LANGUAGE, "en_US")
+        languagesConfig = instance.getValue(CONFIG_LANGUAGE, "auto")
 
         displayEmoji.isSelected = displayEmojiConfig == "emoji"
         useUnicode.isSelected = useUnicodeConfig
