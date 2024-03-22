@@ -10,6 +10,9 @@ class GitmojiLocale {
 
     private var map: Map<String, Any> = emptyMap()
 
+    companion object {
+        val LANGUAGE_CONFIG_LIST = arrayOf("auto", "en_US", "zh_CN")
+    }
 
     fun t(name: String, description: String): String {
         if (map.isEmpty()) {

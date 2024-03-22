@@ -26,7 +26,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private var includeGitMojiDescriptionConfig: Boolean = false
     private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
-    private val languageOptions = arrayOf("auto", "en_US", "zh_CN")
+    private val languageOptions = GitmojiLocale.LANGUAGE_CONFIG_LIST
     private val languages = ComboBox(languageOptions)
     private var textAfterUnicodeConfig: String = " "
     private var languagesConfig:String = "auto"
