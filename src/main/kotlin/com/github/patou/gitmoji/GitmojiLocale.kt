@@ -35,14 +35,14 @@ class GitmojiLocale {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                loadLocaleYaml(defaultLanguage)
+                loadLocalYaml(defaultLanguage)
                 onMapLoaded()
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) {
-                        loadLocaleYaml(defaultLanguage)
+                        loadLocalYaml(defaultLanguage)
                         onMapLoaded()
                     } else {
                         loadYaml(response.body!!.string())
@@ -53,7 +53,8 @@ class GitmojiLocale {
         })
     }
 
-    private fun loadLocaleYaml(language: String) {
+    // load local yaml
+    private fun loadLocalYaml(language: String) {
         val yaml = Yaml()
         javaClass.getResourceAsStream("/gitmojis-${language}.yaml").use { inputStream ->
             if (inputStream != null) {
@@ -62,6 +63,7 @@ class GitmojiLocale {
         }
     }
 
+    // load remote yaml
     private fun loadYaml(text: String) {
         val yaml = Yaml()
         map = yaml.loadAs(text, HashMap::class.java)
