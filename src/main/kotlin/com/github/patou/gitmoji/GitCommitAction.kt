@@ -40,7 +40,6 @@ import javax.swing.ListSelectionModel
 class GitCommitAction : AnAction() {
     private val gitmojis = ArrayList<GitmojiData>()
 
-
     init {
         isEnabledInModalContext = true
         loadGitmojiFromHTTP()
@@ -55,7 +54,6 @@ class GitCommitAction : AnAction() {
     override fun actionPerformed(actionEvent: AnActionEvent) {
         val project = actionEvent.project
         val commitMessage = getCommitMessage(actionEvent)
-
         when {
             commitMessage != null && project != null -> {
                 createPopup(project, commitMessage, gitmojis)
@@ -229,8 +227,8 @@ class GitCommitAction : AnAction() {
     private fun loadGitmojiFromHTTP() {
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Builder()
-            .url("https://gitmoji.dev/api/gitmojis")
-            .build()
+                .url("https://gitmoji.dev/api/gitmojis")
+                .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 loadDefaultGitmoji()
@@ -257,10 +255,14 @@ class GitCommitAction : AnAction() {
     }
 
     private fun loadGitmoji(text: String) {
-        Gson().fromJson(text, Gitmojis::class.java).also {
-            it.gitmojis.forEach { gitmoji ->
-                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmoji.description))
+        val gitmojiLocale = GitmojiLocale()
+        gitmojiLocale.loadMap {
+            Gson().fromJson(text, Gitmojis::class.java).also {
+                it.gitmojis.forEach { gitmoji ->
+                    gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmojiLocale.t(gitmoji.name, gitmoji.description)))
+                }
             }
         }
     }
+
 }
