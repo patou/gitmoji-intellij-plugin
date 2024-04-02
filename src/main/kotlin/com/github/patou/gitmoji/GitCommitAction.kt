@@ -103,7 +103,7 @@ class GitCommitAction : AnAction() {
                     appendTextPadding(5)
                     append(
                         first(
-                            convertLineSeparators(value.description, RETURN_SYMBOL),
+                            convertLineSeparators(value.localeDescription, RETURN_SYMBOL),
                             rightMargin,
                             false
                         )
@@ -134,7 +134,7 @@ class GitCommitAction : AnAction() {
                     }
                 }
             })
-            .setNamerForFiltering { "${it.code} ${it.description}" }
+            .setNamerForFiltering { "${it.code} ${it.localeDescription} ${it.description}" }
             .setAutoPackHeightOnFiltering(false)
             .createPopup()
             .apply {
@@ -195,7 +195,7 @@ class GitCommitAction : AnAction() {
             }
             val startPosition = insertPosition + selectedGitmoji.length
             if (includeGitMojiDescription) {
-                message = message.substring(0, startPosition) + gitmoji.description
+                message = message.substring(0, startPosition) + gitmoji.localeDescription
             }
             commitMessage.setCommitMessage(message)
 
@@ -255,14 +255,12 @@ class GitCommitAction : AnAction() {
     }
 
     private fun loadGitmoji(text: String) {
-        val gitmojiLocale = GitmojiLocale()
-        gitmojiLocale.loadMap {
-            Gson().fromJson(text, Gitmojis::class.java).also {
-                it.gitmojis.forEach { gitmoji ->
-                    gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmojiLocale.t(gitmoji.name, gitmoji.description)))
-                }
+        Gson().fromJson(text, Gitmojis::class.java).also {
+            it.gitmojis.forEach { gitmoji ->
+                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmoji.description, gitmoji.name))
             }
         }
+        GitmojiLocale.loadTranslations()
     }
 
 }

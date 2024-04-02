@@ -6,47 +6,48 @@ import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 import java.util.*
 
-class GitmojiLocale {
+object GitmojiLocale {
 
-    private var map: Map<String, Any> = emptyMap()
+    private var translations: MutableMap<String, String> = HashMap()
 
-    companion object {
-        val LANGUAGE_CONFIG_LIST = arrayOf("auto", "en_US", "zh_CN")
-    }
+    val LANGUAGE_CONFIG_LIST = arrayOf("auto", "en_US", "zh_CN")
 
     fun t(name: String, description: String): String {
-        if (map.isEmpty()) {
+        if (translations.isEmpty()) {
             return description
         }
         // Maybe not very elegant, maybe it can be optimized ?
-        return (map["gitmojis"] as Map<*, *>)[name]?.toString() ?: return description
+        return translations[name] ?: return description
     }
 
-    fun loadMap(onMapLoaded:() -> Unit) {
+    fun loadTranslations() {
+        translations.clear()
         val instance = PropertiesComponent.getInstance()
-        val language = instance.getValue(CONFIG_LANGUAGE)
-        var defaultLanguage = Locale.getDefault().toString()
-        if (language != null && language != "auto") {
-            defaultLanguage = language.toString()
+        var language = instance.getValue(CONFIG_LANGUAGE) ?: "auto"
+        if (language == "auto") {
+            val defaultLanguage = Locale.getDefault().toString()
+            if (LANGUAGE_CONFIG_LIST.contains(defaultLanguage)) {
+                language = defaultLanguage
+            }
+            else {
+                language = "en_US"
+            }
         }
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
-            .url("https://raw.githubusercontent.com/caiyucong/gitmoji-intellij-plugin-chinese/t/gitmojis-${defaultLanguage}.yaml")
+            .url("https://raw.githubusercontent.com/patou/gitmoji-intellij-plugin/master/src/main/resources/gitmojis-${language}.yaml")
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                loadLocalYaml(defaultLanguage)
-                onMapLoaded()
+                loadLocalYaml(language)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) {
-                        loadLocalYaml(defaultLanguage)
-                        onMapLoaded()
+                        loadLocalYaml(language)
                     } else {
                         loadYaml(response.body!!.string())
-                        onMapLoaded()
                     }
                 }
             }
@@ -58,7 +59,7 @@ class GitmojiLocale {
         val yaml = Yaml()
         javaClass.getResourceAsStream("/gitmojis-${language}.yaml").use { inputStream ->
             if (inputStream != null) {
-                map = yaml.loadAs(inputStream, HashMap::class.java)
+                addTranslation(yaml.loadAs(inputStream, HashMap::class.java))
             }
         }
     }
@@ -66,6 +67,16 @@ class GitmojiLocale {
     // load remote yaml
     private fun loadYaml(text: String) {
         val yaml = Yaml()
-        map = yaml.loadAs(text, HashMap::class.java)
+        addTranslation(yaml.loadAs(text, HashMap::class.java))
+    }
+
+    private fun addTranslation(loadedTranslation : HashMap<String, Any>) {
+        loadedTranslation["gitmojis"]?.let { it ->
+            if (it is Map<*, *>) {
+                it.forEach { (key, value) ->
+                    translations[key.toString()] = value.toString()
+                }
+            }
+        }
     }
 }

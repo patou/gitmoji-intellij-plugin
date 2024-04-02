@@ -59,7 +59,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         textAfterUnicodePanel.add(textAfterUnicode, null)
         mainPanel.add(textAfterUnicodePanel)
         val languageJPanel = JPanel(FlowLayout(FlowLayout.LEADING))
-        languageJPanel.add(JLabel("Language (Take effect after restart) "))
+        languageJPanel.add(JLabel("Language"))
         languageJPanel.add(languages, null)
         mainPanel.add(languageJPanel)
     }
@@ -84,6 +84,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         projectInstance.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
         projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
         instance.setValue(CONFIG_LANGUAGE, languagesConfig)
+        GitmojiLocale.loadTranslations()
     }
 
     override fun reset() {
