@@ -3,7 +3,7 @@ package com.github.patou.gitmoji
 import com.intellij.openapi.util.SystemInfo
 
 class Gitmojis(val gitmojis: List<Gitmoji>) {
-    class Gitmoji(val emoji: String, val code: String, val description: String)
+    class Gitmoji(val emoji: String, val code: String, val description: String, val name: String)
 
     companion object {
         fun defaultDisplayType(): String {
