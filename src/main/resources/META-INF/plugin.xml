@@ -27,7 +27,7 @@
             Change notes is settings in the build.gradle file
         ]]>
     </change-notes>
-    <idea-version since-build="192" />
+    <idea-version since-build="232" />
 
     <depends>com.intellij.modules.lang</depends>
 
@@ -42,5 +42,6 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other"
                              id="com.github.patou.gitmoji.config" displayName="Gitmoji Plus: Commit Button"/>
+        <vcsLogCustomColumn implementation="com.github.patou.gitmoji.GitmojiCustomColumn" />
     </extensions>
 </idea-plugin>

@@ -91,7 +91,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         val propertiesComponent = PropertiesComponent.getInstance(project)
         val instance = PropertiesComponent.getInstance()
 
-        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
+        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, defaultDisplayType())
         useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
         insertInCursorPositionConfig = propertiesComponent.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
         includeGitMojiDescriptionConfig = propertiesComponent.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)

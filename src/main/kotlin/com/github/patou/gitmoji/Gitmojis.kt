@@ -1,32 +1,54 @@
 package com.github.patou.gitmoji
 
-import com.intellij.openapi.util.SystemInfo
+import com.google.gson.Gson
+import okhttp3.*
+import okhttp3.Request.Builder
+import java.io.IOException
 
-class Gitmojis(val gitmojis: List<Gitmoji>) {
-    class Gitmoji(val emoji: String, val code: String, val description: String, val name: String)
+object Gitmojis {
+    val gitmojis = ArrayList<GitmojiData>()
 
-    companion object {
-        fun defaultDisplayType(): String {
-            return if (SystemInfo.isWindows) "icon" else "emoji"
-        }
+    init {
+        loadGitmojiFromHTTP()
+    }
 
-        fun insertAt(target: String, position: Int, insert: String): String {
-            val targetLen = target.length
-            require(!(position < 0 || position > targetLen)) { "position=$position" }
-            if (insert.isEmpty()) {
-                return target
+    private fun loadGitmojiFromHTTP() {
+        val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
+        val request: Request = Builder()
+            .url("https://gitmoji.dev/api/gitmojis")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                loadDefaultGitmoji()
             }
-            if (position == 0) {
-                return insert + target
-            } else if (position == targetLen) {
-                return target + insert
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) loadDefaultGitmoji()
+                    else {
+                        loadGitmoji(response.body!!.string())
+                    }
+                }
             }
-            val insertLen = insert.length
-            val buffer = CharArray(targetLen + insertLen)
-            target.toCharArray(buffer, 0, 0, position)
-            insert.toCharArray(buffer, position, 0, insertLen)
-            target.toCharArray(buffer, position + insertLen, position, targetLen)
-            return String(buffer)
+        })
+    }
+
+    private fun loadDefaultGitmoji() {
+        javaClass.getResourceAsStream("/gitmojis.json").use { inputStream ->
+            if (inputStream != null) {
+                val text = inputStream.bufferedReader().readText()
+                loadGitmoji(text)
+            }
         }
     }
+
+    private fun loadGitmoji(text: String) {
+        Gson().fromJson(text, JsonGitmojis::class.java).also {
+            it.gitmojis.forEach { gitmoji ->
+                gitmojis.add(GitmojiData(gitmoji.code, gitmoji.emoji, gitmoji.description, gitmoji.name))
+            }
+        }
+        GitmojiLocale.loadTranslations()
+    }
+
 }
