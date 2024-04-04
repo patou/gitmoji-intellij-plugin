@@ -3,6 +3,10 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Translate the gitmoji description
+  - Chinese (thanks to @caiyucong)
+  - French
+- Update project to last intellij plugin
 
 ## [1.14.0] - 2024-02-08
 - Update to intellij 2024.1
@@ -10,7 +14,7 @@
 ## [1.13.0] - 2023-07-26
 - Fix the bug of Exception reporting when opening idea 2023.2
 - Change Method deprecated in Config
-- Update projet to last intellij plugin
+- Update project to last intellij plugin
 
 ## [1.12.2] - 2023-07-05
 - Update to intellij 2023.2
