@@ -92,7 +92,7 @@
       "emoji": "🔒️",
       "entity": "&#x1f512;",
       "code": ":lock:",
-      "description": "Fix security issues.",
+      "description": "Fix security or privacy issues.",
       "name": "lock",
       "semver": "patch"
     },
@@ -426,7 +426,7 @@
     },
     {
       "emoji": "⚗️",
-      "entity": "&#128248;",
+      "entity": "&#x2697;",
       "code": ":alembic:",
       "description": "Perform experiments.",
       "name": "alembic",
@@ -477,7 +477,7 @@
       "entity": "&#x1f4ab;",
       "code": ":dizzy:",
       "description": "Add or update animations and transitions.",
-      "name": "animation",
+      "name": "dizzy",
       "semver": "patch"
     },
     {
