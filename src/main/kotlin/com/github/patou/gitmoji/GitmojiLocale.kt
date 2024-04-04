@@ -70,7 +70,7 @@ object GitmojiLocale {
         addTranslation(yaml.loadAs(text, HashMap::class.java))
     }
 
-    private fun addTranslation(loadedTranslation : HashMap<String, Any>) {
+    private fun addTranslation(loadedTranslation : HashMap<*, *>) {
         loadedTranslation["gitmojis"]?.let { it ->
             if (it is Map<*, *>) {
                 it.forEach { (key, value) ->
