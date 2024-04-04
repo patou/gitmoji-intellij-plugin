@@ -15,11 +15,11 @@ import javax.swing.JPanel
 
 class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
-    private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
+    private val useUnicode = JCheckBox(GitmojiBundle.message("config.useUnicode"))
     private val displayEmoji =
-        JCheckBox("Display emoji instead of icon in list (Bug in IntelliJ Windows or emoji in black and white)")
-    private val insertInCursorPosition = JCheckBox("Insert the emoji in the cursor location")
-    private val includeGitMojiDescription = JCheckBox("Include gitmoji description")
+        JCheckBox(GitmojiBundle.message("config.displayEmoji"))
+    private val insertInCursorPosition = JCheckBox(GitmojiBundle.message("config.insertInCursorPosition"))
+    private val includeGitMojiDescription = JCheckBox(GitmojiBundle.message("config.includeGitMojiDescription"))
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private var insertInCursorPositionConfig: Boolean = false
@@ -44,7 +44,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         return !Comparing.equal(comboBox.selectedItem, value)
     }
 
-    override fun getDisplayName(): String = "Gitmoji"
+    override fun getDisplayName(): String = GitmojiBundle.message("projectName")
     override fun getId(): String = "com.github.patou.gitmoji.config"
 
     init {
@@ -59,7 +59,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         textAfterUnicodePanel.add(textAfterUnicode, null)
         mainPanel.add(textAfterUnicodePanel)
         val languageJPanel = JPanel(FlowLayout(FlowLayout.LEADING))
-        languageJPanel.add(JLabel("Language"))
+        languageJPanel.add(JLabel(GitmojiBundle.message("config.language")))
         languageJPanel.add(languages, null)
         mainPanel.add(languageJPanel)
     }
