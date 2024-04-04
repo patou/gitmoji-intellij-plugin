@@ -38,6 +38,15 @@ You can contrib by adding [issues](https://github.com/patou/gitmoji-intellij-plu
 - Write your code
 - Use graddle tasks runIde to run and test the plugin
 
+## Translation
+
+You can help to translate the emoji description in your language.
+
+- Copy the file `src/main/resources/gitmojis.yaml` to `src/main/resources/gitmojis-<your_language>.yaml`
+- Translate the description in your language
+- Add the language in the `src/main/kotlin/com/github/patou/gitmoji/GitmojiLocale.kt` class
+- Create a pull request
+
 ## Publish plugin
 
 First time, copy gradle.properties.sample to gradle.properties
