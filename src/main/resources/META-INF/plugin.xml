@@ -41,8 +41,8 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-
         <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other" key="projectName" bundle="messages.GitmojiBundle"
                              id="com.github.patou.gitmoji.config"/>
+        <vcsLogCustomColumn implementation="com.github.patou.gitmoji.GitmojiCustomColumn" />
     </extensions>
 </idea-plugin>
