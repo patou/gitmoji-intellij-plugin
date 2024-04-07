@@ -7,6 +7,8 @@
   - Chinese (thanks to @caiyucong)
   - French
 - Update project to last intellij plugin
+- Translate the plugin in Chinese (thanks to @caiyucong)
+- Add a new column in the log table for display the gitmoji icon.
 
 ## [1.14.0] - 2024-02-08
 - Update to intellij 2024.1
