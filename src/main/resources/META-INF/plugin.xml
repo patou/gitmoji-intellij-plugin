@@ -27,20 +27,22 @@
             Change notes is settings in the build.gradle file
         ]]>
     </change-notes>
-    <idea-version since-build="192" />
+    <idea-version since-build="232" />
 
     <depends>com.intellij.modules.lang</depends>
 
+    <resource-bundle>messages.GitmojiBundle</resource-bundle>
+
     <actions>
-        <action id="Gitmoji.GitCommitAction" class="com.github.patou.gitmoji.GitCommitAction" text="Gitmoji" icon="/icons/pluginIcon.png"
-                description="Add gitmoji button">
+        <action id="Gitmoji.GitCommitAction" class="com.github.patou.gitmoji.GitCommitAction" icon="/icons/pluginIcon.png">
             <keyboard-shortcut first-keystroke="ctrl alt g" keymap="$default" />
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first" />
         </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other"
-                             id="com.github.patou.gitmoji.config" displayName="Gitmoji Plus: Commit Button"/>
+
+        <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other" key="projectName" bundle="messages.GitmojiBundle"
+                             id="com.github.patou.gitmoji.config"/>
     </extensions>
 </idea-plugin>
