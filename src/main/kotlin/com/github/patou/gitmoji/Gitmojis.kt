@@ -8,10 +8,6 @@ import java.io.IOException
 object Gitmojis {
     val gitmojis = ArrayList<GitmojiData>()
 
-    init {
-        loadGitmojiFromHTTP()
-    }
-
     private fun loadGitmojiFromHTTP() {
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Builder()
@@ -49,6 +45,12 @@ object Gitmojis {
             }
         }
         GitmojiLocale.loadTranslations()
+    }
+
+    fun ensureGitmojisLoaded() {
+        if (gitmojis.isEmpty()) {
+            loadGitmojiFromHTTP()
+        }
     }
 
 }
