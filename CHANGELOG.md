@@ -3,6 +3,9 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+- Update to intellij 2024.2
+- Correct first display list not loaded
+- Update versions of dependencies
 
 ## [2.0.0] - 2024-07-01
 
