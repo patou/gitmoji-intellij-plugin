@@ -3,6 +3,9 @@
 # gitmoji-intellij-plugin changelog
 
 ## [Unreleased]
+
+## [2.1.0] - 2024-07-12
+
 - Update to intellij 2024.2
 - Correct first display list not loaded
 - Update versions of dependencies
@@ -105,7 +108,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.14.0...v2.0.0
 [1.14.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.12.2...v1.13.0
