@@ -44,7 +44,7 @@ jobs:
 
       # Setup Gradle
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       # Run IDEA prepared for UI testing
       - name: Run IDE
