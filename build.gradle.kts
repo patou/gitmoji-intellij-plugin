@@ -6,6 +6,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
+fun Provider<String>.toList() = map { it.split(',').mapNotNull { s -> s.trim().takeIf(String::isNotEmpty) } }
 
 plugins {
     id("java") // Java support
@@ -38,10 +39,10 @@ dependencies {
         create(type = properties("platformType"), version = properties("platformVersion"), useInstaller = false)
         jetbrainsRuntime()
         plugins(
-            properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
+            properties("platformPlugins").toList()
         )
         bundledPlugins(
-            properties("platformBundledPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
+            properties("platformBundledPlugins").toList()
         )
         pluginVerifier()
         zipSigner()
@@ -60,6 +61,12 @@ kotlin {
 intellijPlatform {
     pluginConfiguration {
         name = properties("pluginName")
+    }
+    pluginVerification {
+        freeArgs = listOf("-mute", "TemplateWordInPluginName")
+        ides {
+            ide(type = properties("platformType"), version = properties("platformVersion"), useInstaller = false)
+        }
     }
 }
 
@@ -87,7 +94,7 @@ tasks {
     }
 
     patchPluginXml {
-        version = properties("pluginVersion")
+        version = properties("pluginVersion").get()
         sinceBuild = properties("pluginSinceBuild")
         untilBuild = properties("pluginUntilBuild")
 
