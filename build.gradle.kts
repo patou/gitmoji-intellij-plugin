@@ -2,6 +2,7 @@ import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.models.ProductRelease
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -42,6 +43,11 @@ dependencies {
         bundledPlugins(
             properties("platformBundledPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
         )
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+
+        testFramework(TestFrameworkType.Platform)
     }
 }
 
