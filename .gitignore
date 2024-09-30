@@ -71,6 +71,7 @@ fabric.properties
 /gitmoji-plugin.jar
 .idea/
 *.iml
+.intellijPlatform/
 
 /build/
 /.gradle/
