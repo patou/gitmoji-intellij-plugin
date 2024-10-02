@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+- Update to intellij 2024.3
+- Update gradle plugin version (thanks to @DeKaN)
+- Add RU translation (thanks to @Greem4)
+
 ## [2.1.0] - 2024-07-12
 
 - Update to intellij 2024.2
