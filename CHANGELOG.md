@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.2.2] - 2024-10-21
+
 - Update to intellij 2024.3
 - Update gradle plugin version (thanks to @DeKaN)
 - Add RU translation (thanks to @Greem4)
@@ -112,7 +114,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.2...HEAD
+[2.2.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...v2.2.2
 [2.1.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.14.0...v2.0.0
 [1.14.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.13.0...v1.14.0
