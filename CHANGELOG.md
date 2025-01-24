@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.2.3] - 2025-01-24
+
 - Update to intellij 2025.1
 
 ## [2.2.2] - 2024-10-21
@@ -116,7 +118,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.2...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.3...HEAD
+[2.2.3]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...v2.2.2
 [2.1.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v1.14.0...v2.0.0
