@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- Update to intellij 2025.1
+
 ## [2.2.2] - 2024-10-21
 
 - Update to intellij 2024.3
