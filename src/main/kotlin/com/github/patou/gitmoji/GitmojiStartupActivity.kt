@@ -1,10 +1,9 @@
 package com.github.patou.gitmoji
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vcs.impl.VcsStartupActivity
+import com.intellij.openapi.startup.ProjectActivity
 
-class GitmojiStartupActivity : VcsStartupActivity {
-    override val order = Integer.MAX_VALUE
-    override fun runActivity(project: Project) {
+class GitmojiStartupActivity : ProjectActivity {
+    override suspend fun execute(project: Project) {
         Gitmojis.ensureGitmojisLoaded();
     }
 }

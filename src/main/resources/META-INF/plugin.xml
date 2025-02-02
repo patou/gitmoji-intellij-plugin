@@ -47,6 +47,8 @@
         <projectConfigurable instance="com.github.patou.gitmoji.GitMojiConfig" groupId="other" key="projectName" bundle="messages.GitmojiBundle"
                              id="com.github.patou.gitmoji.config"/>
         <vcsLogCustomColumn implementation="com.github.patou.gitmoji.GitmojiCustomColumn" />
-        <vcsStartupActivity implementation="com.github.patou.gitmoji.GitmojiStartupActivity" />
+        <backgroundPostStartupActivity id="com.github.patou.gitmoji"
+                                       implementation="com.github.patou.gitmoji.GitmojiStartupActivity"
+                                       order="last"/>
     </extensions>
 </idea-plugin>
