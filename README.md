@@ -14,14 +14,18 @@ This plug-in will help you to choose and add the gitmoji, via a button in the Co
 * Insert or replace the gitmoji before the message (keep the git commit message)
 * Shortcut to open the list : ctrl alt g (or cmd alt g on mac)
 * Load the list of gitmoji on startup from the repos of gitmoji (fallback to a local list if error).
+* Allow to display the gitmoji in a new column in the commit history
+* Translate the gitmoji description in your chinese and french language.
 
 See the [gitmoji website](https://gitmoji.dev/) for have the list of Emoji and their signification.
 <!-- Plugin description end -->
 
 ![Button to add gitmoji](screenshot/gitmoji-button.png)
 ![List to choose gitmoji](screenshot/gitmoji-plugin.png)
-![Config to use unicode instead text code](screenshot/gitmoji-config.png)
+![Multiple configurations for the plugin](screenshot/gitmoji-config.png)
 ![Insert gitmoji unicode](screenshot/gitmoji-unicode.png)
+![Display a gitmoji column](screenshot/gitmoji-column.png)
+![Translate gitmoji in chinese](screenshot/gitmoji-chinese.png)
 
 ## Installation
 
@@ -37,6 +41,15 @@ You can contrib by adding [issues](https://github.com/patou/gitmoji-intellij-plu
 - Import the project in IntelliJ.
 - Write your code
 - Use graddle tasks runIde to run and test the plugin
+
+## Translation
+
+You can help to translate the emoji description in your language.
+
+- Copy the file `src/main/resources/gitmojis.yaml` to `src/main/resources/gitmojis-<your_language>.yaml`
+- Translate the description in your language
+- Add the language in the `src/main/kotlin/com/github/patou/gitmoji/GitmojiLocale.kt` class
+- Create a pull request
 
 ## Publish plugin
 

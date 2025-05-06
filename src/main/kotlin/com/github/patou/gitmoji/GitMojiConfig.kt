@@ -1,6 +1,7 @@
 package com.github.patou.gitmoji
 
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
@@ -13,15 +14,12 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JTextArea
 
-class GitMojiConfig constructor(private val project: Project) : SearchableConfigurable {
+class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
-    private val useUnicode = JCheckBox("Use unicode emoji instead of text version (:code:)")
-    private val displayEmoji =
-        JCheckBox("Display emoji instead of icon in list (Bug in IntelliJ Windows or emoji in black and white)")
-    private val insertInCursorPosition =
-        JCheckBox("Insert the emoji in the cursor location")
-    private val includeGitMojiDescription =
-        JCheckBox("Include gitmoji description")
+    private val useUnicode = JCheckBox(GitmojiBundle.message("config.useUnicode"))
+    private val displayEmoji = JCheckBox(GitmojiBundle.message("config.displayEmoji"))
+    private val insertInCursorPosition = JCheckBox(GitmojiBundle.message("config.insertInCursorPosition"))
+    private val includeGitMojiDescription = JCheckBox(GitmojiBundle.message("config.includeGitMojiDescription"))
     private val previewGitCommitMessage = JTextArea(2, 80)
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
@@ -29,21 +27,25 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
     private var includeGitMojiDescriptionConfig: Boolean = false
     private val textAfterUnicodeOptions = arrayOf("<nothing>", "<space>", ":", "(", "_", "[", "-")
     private val textAfterUnicode = ComboBox(textAfterUnicodeOptions)
+    private val languageOptions = GitmojiLocale.LANGUAGE_CONFIG_LIST
+    private val languages = ComboBox(languageOptions)
     private var textAfterUnicodeConfig: String = " "
+    private var languagesConfig:String = "auto"
 
     override fun isModified(): Boolean =
-                previewCommit() &&
-                isModified(displayEmoji, displayEmojiConfig == "emoji") ||
-                isModified(useUnicode, useUnicodeConfig) ||
-                isModified(textAfterUnicode, textAfterUnicodeConfig) ||
-                isModified(insertInCursorPosition, insertInCursorPositionConfig) ||
-                isModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
+        Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") || Configurable.isCheckboxModified(
+            useUnicode,
+            useUnicodeConfig
+        ) || isModified(textAfterUnicode, textAfterUnicodeConfig) || Configurable.isCheckboxModified(
+            insertInCursorPosition,
+            insertInCursorPositionConfig
+        ) || Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
 
     private fun isModified(comboBox: ComboBox<String>, value: String): Boolean {
         return !Comparing.equal(comboBox.selectedItem, value)
     }
 
-    override fun getDisplayName(): String = "Gitmoji"
+    override fun getDisplayName(): String = GitmojiBundle.message("projectName")
     override fun getId(): String = "com.github.patou.gitmoji.config"
 
     init {
@@ -60,6 +62,10 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
         textAfterUnicodePanel.add(JLabel("Character after inserted emoji ✨"))
         textAfterUnicodePanel.add(textAfterUnicode, null)
         mainPanel.add(textAfterUnicodePanel)
+        val languageJPanel = JPanel(FlowLayout(FlowLayout.LEADING))
+        languageJPanel.add(JLabel(GitmojiBundle.message("config.language")))
+        languageJPanel.add(languages, null)
+        mainPanel.add(languageJPanel)
         previewGitCommitMessage.isEditable = false
         mainPanel.add(JLabel("Preview"))
         mainPanel.add(previewGitCommitMessage)
@@ -75,34 +81,39 @@ class GitMojiConfig constructor(private val project: Project) : SearchableConfig
             1 -> " "
             else -> textAfterUnicodeOptions[textAfterUnicode.selectedIndex]
         }
+        languagesConfig = languageOptions[languages.selectedIndex]
 
         val projectInstance = PropertiesComponent.getInstance(project)
+        val instance = PropertiesComponent.getInstance()
         projectInstance.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
         projectInstance.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
         projectInstance.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
         projectInstance.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
         projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
+        instance.setValue(CONFIG_LANGUAGE, languagesConfig)
+        GitmojiLocale.loadTranslations()
         previewCommit()
     }
     override fun reset() {
         val propertiesComponent = PropertiesComponent.getInstance(project)
+        val instance = PropertiesComponent.getInstance()
 
-        displayEmojiConfig =
-            propertiesComponent.getValue(CONFIG_DISPLAY_ICON, Gitmojis.defaultDisplayType())
+        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, defaultDisplayType())
         useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
         insertInCursorPositionConfig = propertiesComponent.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
         includeGitMojiDescriptionConfig = propertiesComponent.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
         textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
+        languagesConfig = instance.getValue(CONFIG_LANGUAGE, "auto")
 
         displayEmoji.isSelected = displayEmojiConfig == "emoji"
         useUnicode.isSelected = useUnicodeConfig
         insertInCursorPosition.isSelected = insertInCursorPositionConfig
         includeGitMojiDescription.isSelected = includeGitMojiDescriptionConfig
-        textAfterUnicode.selectedIndex =
-            when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
-                -1 -> if (textAfterUnicodeConfig.equals(" ")) 1 else 0
-                else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
-            }
+        textAfterUnicode.selectedIndex = when (textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)) {
+            -1 -> if (textAfterUnicodeConfig == " ") 1 else 0
+            else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
+        }
+        languages.selectedIndex = languageOptions.indexOf(languagesConfig)
         previewCommit()
     }
 

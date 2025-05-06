@@ -92,9 +92,17 @@
       "emoji": "🔒️",
       "entity": "&#x1f512;",
       "code": ":lock:",
-      "description": "Fix security issues.",
+      "description": "Fix security or privacy issues.",
       "name": "lock",
       "semver": "patch"
+    },
+    {
+      "emoji": "🔐",
+      "entity": "&#x1f510;",
+      "code": ":closed_lock_with_key:",
+      "description": "Add or update secrets.",
+      "name": "closed-lock-with-key",
+      "semver": null
     },
     {
       "emoji": "🔖",
@@ -170,7 +178,7 @@
     },
     {
       "emoji": "♻️",
-      "entity": "&#x2672;",
+      "entity": "&#x267b;",
       "code": ":recycle:",
       "description": "Refactor code.",
       "name": "recycle",
@@ -418,7 +426,7 @@
     },
     {
       "emoji": "⚗️",
-      "entity": "&#128248;",
+      "entity": "&#x2697;",
       "code": ":alembic:",
       "description": "Perform experiments.",
       "name": "alembic",
@@ -469,7 +477,7 @@
       "entity": "&#x1f4ab;",
       "code": ":dizzy:",
       "description": "Add or update animations and transitions.",
-      "name": "animation",
+      "name": "dizzy",
       "semver": "patch"
     },
     {
@@ -524,9 +532,57 @@
       "emoji": "👔",
       "entity": "&#128084;",
       "code": ":necktie:",
-      "description": "Add or update business logic",
+      "description": "Add or update business logic.",
       "name": "necktie",
       "semver": "patch"
+    },
+    {
+      "emoji": "🩺",
+      "entity": "&#x1FA7A;",
+      "code": ":stethoscope:",
+      "description": "Add or update healthcheck.",
+      "name": "stethoscope",
+      "semver": null
+    },
+    {
+      "emoji": "🧱",
+      "entity": "&#x1f9f1;",
+      "code": ":bricks:",
+      "description": "Infrastructure related changes.",
+      "name": "bricks",
+      "semver": null
+    },
+    {
+      "emoji": "🧑‍💻",
+      "entity": "&#129489;&#8205;&#128187;",
+      "code": ":technologist:",
+      "description": "Improve developer experience.",
+      "name": "technologist",
+      "semver": null
+    },
+    {
+      "emoji": "💸",
+      "entity": "&#x1F4B8;",
+      "code": ":money_with_wings:",
+      "description": "Add sponsorships or money related infrastructure.",
+      "name": "money-with-wings",
+      "semver": null
+    },
+    {
+      "emoji": "🧵",
+      "entity": "&#x1F9F5;",
+      "code": ":thread:",
+      "description": "Add or update code related to multithreading or concurrency.",
+      "name": "thread",
+      "semver": null
+    },
+    {
+      "emoji": "🦺",
+      "entity": "&#x1F9BA;",
+      "code": ":safety_vest:",
+      "description": "Add or update code related to validation.",
+      "name": "safety-vest",
+      "semver": null
     }
   ]
 }

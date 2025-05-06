@@ -1,0 +1,74 @@
+gitmojis:
+  art: Améliorer la structure / le format du code.
+  zap: Améliorer les performances.
+  fire: Supprimer du code ou des fichiers.
+  bug: Corriger un bug.
+  ambulance: Correctif critique.
+  sparkles: Introduire de nouvelles fonctionnalités.
+  memo: Ajouter ou mettre à jour la documentation.
+  rocket: Deployment des trucs
+  lipstick: Ajouter ou mettre à jour les fichiers d'interface utilisateur et de style.
+  tada: Démarrer un projet.
+  white-check-mark: Ajouter, mettre à jour ou passer des tests.
+  lock: Corriger les problèmes de sécurité ou de confidentialité.
+  closed-lock-with-key: Ajouter ou mettre à jour des secrets.
+  bookmark: Publication d'une nouvelle version
+  rotating-light: Corriger les avertissements du compilateur / linter.
+  construction: Travail en cours.
+  green-heart: Corriger la construction CI.
+  arrow-down: Rétrograder les dépendances.
+  arrow-up: Mettre à jour les dépendances.
+  pushpin: Épingler les dépendances à des versions spécifiques.
+  construction-worker: Ajouter ou mettre à jour le système de construction CI.
+  chart-with-upwards-trend: Ajouter ou mettre à jour du code de suivis ou d'analytique.
+  recycle: Refactoriser le code.
+  heavy-plus-sign: Ajouter une dépendance.
+  heavy-minus-sign: Supprimer une dépendance.
+  wrench: Ajouter ou mettre à jour les fichiers de configuration.
+  hammer: Ajouter ou mettre à jour les scripts de développement.
+  globe-with-meridians: Internationalisation et localisation.
+  pencil2: Corriger les fautes de frappe.
+  poop: Écrire du mauvais code qui doit être amélioré.
+  rewind: Revenir en arrière.
+  twisted-rightwards-arrows: Fusionner des branches.
+  package: Ajouter ou mettre à jour des fichiers ou des packages compilés.
+  alien: Mettre à jour le code en raison de modifications d'API externes.
+  truck: "Déplacer ou renommer des ressources (par exemple: fichiers, chemins, routes)."
+  page-facing-up: Ajouter ou mettre à jour la licence.
+  boom: Introduire des changements incompatibles.
+  bento: Ajouter ou mettre à jour des ressources.
+  wheelchair: Améliorer l'accessibilité.
+  bulb: Ajouter ou mettre à jour des commentaires dans le code source.
+  beers: Écrire du code en ayant bu.
+  speech-balloon: Ajouter ou mettre à jour du texte et des littéraux.
+  card-file-box: Effectuer des modifications liées à la base de données.
+  loud-sound: Ajouter ou mettre à jour des logs.
+  mute: Supprimer des logs.
+  busts-in-silhouette: Ajouter ou mettre à jour le(s) contributeur(s).
+  children-crossing: Améliorer l'expérience utilisateur / l'utilisabilité.
+  building-construction: Effectuer des changements architecturaux.
+  iphone: Travailler sur le design responsive.
+  clown-face: Ajout de Mock
+  egg: Ajouter ou mettre à jour un easter egg.
+  see-no-evil: Ajouter ou mettre à jour un fichier .gitignore.
+  camera-flash: Ajouter ou mettre à jour des captures d'écran.
+  alembic: Effectuer des expérimentations.
+  mag: Améliorer le SEO.
+  label: Ajouter ou mettre à jour des types.
+  seedling: Ajouter ou mettre à jour des fichiers de seed.
+  triangular-flag-on-post: Ajouter, mettre à jour ou supprimer des activateurs de fonctionnalités.
+  goal-net: Attraper les erreurs.
+  dizzy: Ajouter ou mettre à jour des animations et des transitions.
+  wastebasket: Déprécier le code qui doit être nettoyé.
+  passport-control: Travailler sur le code lié à l'autorisation, aux rôles et aux permissions.
+  adhesive-bandage: Correction simple pour un problème non critique.
+  monocle-face: Exploration/inspection des données.
+  coffin: Supprimer du code mort.
+  test-tube: Ajouter un test en échec.
+  necktie: Ajouter ou mettre à jour la logique métier.
+  stethoscope: Ajouter ou mettre à jour les vérifications de santé.
+  bricks: Modifications liées à l'infrastructure.
+  technologist: Améliorer l'expérience des développeurs.
+  money-with-wings: Ajouter des parrainages ou des infrastructures liées à l'argent.
+  thread: Ajouter ou mettre à jour du code lié au multithreading ou à la concurrence.
+  safety-vest: Ajouter ou mettre à jour du code lié à la validation.
