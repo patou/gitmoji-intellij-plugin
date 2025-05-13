@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.3.0] - 2025-05-13
+
 - ⬆️ Update versions of dependencies
 - 🔥 Remove deprecated VcsStartupActivity classe
 - 📌 De-pin pluginUntilBuild (Thanks to @pboling)
@@ -122,7 +124,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.3...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.3...v2.3.0
 [2.2.3]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...v2.2.2
 [2.1.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.0.0...v2.1.0
