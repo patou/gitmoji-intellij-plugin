@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+- ⬆️ Update versions of dependencies
+- 🔥 Remove deprecated VcsStartupActivity classe
+- 📌 De-pin pluginUntilBuild (Thanks to @pboling)
+
 ## [2.2.3] - 2025-01-24
 
 - Update to intellij 2025.1
