@@ -1,0 +1,74 @@
+gitmojis:
+  art: Melhorar a estrutura ou formatação do código.
+  zap: Melhorar a performance.
+  fire: Remover código ou arquivos.
+  bug: Corrigir um bug.
+  ambulance: Correção crítica.
+  sparkles: Adicionar novas funcionalidades.
+  memo: Adicionar ou atualizar a documentação.
+  rocket: Realizar deploy.
+  lipstick: Adicionar ou atualizar a interface e os arquivos de estilo.
+  tada: Iniciar um projeto.
+  white-check-mark: Adicionar, atualizar ou passar testes.
+  lock: Corrigir problemas de segurança ou privacidade.
+  closed-lock-with-key: Adicionar ou atualizar segredos.
+  bookmark: Tags de versão/release.
+  rotating-light: Corrigir alertas do compilador ou linter.
+  construction: Trabalho em andamento.
+  green-heart: Corrigir compilação do build (CI).
+  arrow-down: Fazer downgrade de dependências.
+  arrow-up: Atualizar dependências.
+  pushpin: Fixar dependências em versões específicas.
+  construction-worker: Adicionar ou atualizar o sistema de build (CI).
+  chart-with-upwards-trend: Adicionar ou atualizar códigos de analytics ou rastreamento.
+  recycle: Refatorar código.
+  heavy-plus-sign: Adicionar uma dependência.
+  heavy-minus-sign: Remover uma dependência.
+  wrench: Adicionar ou atualizar arquivos de configuração.
+  hammer: Adicionar ou atualizar scripts de desenvolvimento.
+  globe-with-meridians: Internacionalização e localização.
+  pencil2: Corrigir erros de digitação.
+  poop: Escrever código ruim que precisa ser melhorado.
+  rewind: Reverter mudanças.
+  twisted-rightwards-arrows: Mesclar branches.
+  package: Adicionar ou atualizar arquivos compilados ou pacotes.
+  alien: Atualizar código devido a mudanças em APIs externas.
+  truck: Mover ou renomear recursos (ex.: arquivos, caminhos, rotas).
+  page-facing-up: Adicionar ou atualizar licença.
+  boom: Introduzir mudanças que quebram a retrocompatibilidade.
+  bento: Adicionar ou atualizar recursos gráficos.
+  wheelchair: Melhorar a acessibilidade.
+  bulb: Adicionar ou atualizar comentários no código.
+  beers: Escrever código sob influência (brincadeira).
+  speech-balloon: Adicionar ou atualizar textos e literais.
+  card-file-box: Realizar alterações relacionadas a banco de dados.
+  loud-sound: Adicionar ou atualizar logs.
+  mute: Remover logs.
+  busts-in-silhouette: Adicionar ou atualizar colaboradores.
+  children-crossing: Melhorar a experiência ou usabilidade do usuário.
+  building-construction: Fazer mudanças arquiteturais.
+  iphone: Trabalhar em design responsivo.
+  clown-face: Criar mocks ou simulações.
+  egg: Adicionar ou atualizar um easter egg.
+  see-no-evil: Adicionar ou atualizar o arquivo .gitignore.
+  camera-flash: Adicionar ou atualizar snapshots (ex.: testes visuais).
+  alembic: Realizar experimentos.
+  mag: Melhorar SEO.
+  label: Adicionar ou atualizar tipos.
+  seedling: Adicionar ou atualizar dados de seed (inicialização).
+  triangular-flag-on-post: Adicionar, atualizar ou remover feature flags.
+  goal-net: Capturar erros.
+  dizzy: Adicionar ou atualizar animações e transições.
+  wastebasket: Deprecar código que será removido futuramente.
+  passport-control: Trabalhar com autorização, permissões e papéis.
+  adhesive-bandage: Correção simples para um problema não crítico.
+  monocle-face: Exploração ou inspeção de dados.
+  coffin: Remover código morto.
+  test-tube: Adicionar um teste que deve falhar.
+  necktie: Adicionar ou atualizar regras de negócio.
+  stethoscope: Adicionar ou atualizar verificação de integridade (healthcheck).
+  bricks: Alterações relacionadas à infraestrutura.
+  technologist: Melhorar a experiência do desenvolvedor.
+  money-with-wings: Adicionar patrocínios ou estrutura relacionada a dinheiro.
+  thread: Adicionar ou atualizar código relacionado a multithreading ou concorrência.
+  safety-vest: Adicionar ou atualizar código relacionado a validações.
