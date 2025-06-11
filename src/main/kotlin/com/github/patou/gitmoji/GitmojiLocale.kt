@@ -10,7 +10,7 @@ object GitmojiLocale {
 
     private var translations: MutableMap<String, String> = HashMap()
 
-    val LANGUAGE_CONFIG_LIST = arrayOf("auto", "en_US", "zh_CN", "fr_FR", "ru_RU")
+    val LANGUAGE_CONFIG_LIST = arrayOf("auto", "en_US", "zh_CN", "fr_FR", "ru_RU", "pt_BR")
 
     fun t(name: String, description: String): String {
         if (translations.isEmpty()) {
