@@ -31,14 +31,14 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.yaml:snakeyaml:2.4")
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
-    // IntelliJ Platform Gradle Plugin Dependencies Extension -· read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
+    // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
 
