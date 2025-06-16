@@ -133,14 +133,10 @@ class GitCommitAction : AnAction() {
             .setAutoPackHeightOnFiltering(false)
             .createPopup()
             .apply {
-                setDataProvider { dataId ->
-                    when (dataId) {
-                        // default list action does not work as "CopyAction" is invoked first, but with other copy provider
-                        PlatformDataKeys.COPY_PROVIDER.name -> object : TextCopyProvider() {
-                            override fun getTextLinesToCopy() =
-                                listOfNotNull(selectedMessage?.code).nullize()
-                        }
-                        else -> null
+                setUiDataProvider { sink ->
+                    sink[COPY_PROVIDER] = object : TextCopyProvider() {
+                        override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.EDT
+                        override fun getTextLinesToCopy() = listOfNotNull(selectedMessage).nullize()
                     }
                 }
             }

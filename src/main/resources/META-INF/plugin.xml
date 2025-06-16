@@ -33,6 +33,7 @@
     <idea-version since-build="232" />
 
     <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.GitmojiBundle</resource-bundle>
 
