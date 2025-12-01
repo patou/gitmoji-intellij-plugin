@@ -5,6 +5,7 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.PlatformCoreDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager.getApplication
 import com.intellij.openapi.command.CommandProcessor
@@ -132,14 +133,6 @@ class GitCommitAction : AnAction() {
             .setNamerForFiltering { "${it.code} ${it.localeDescription} ${it.description}" }
             .setAutoPackHeightOnFiltering(false)
             .createPopup()
-            .apply {
-                setUiDataProvider { sink ->
-                    sink[COPY_PROVIDER] = object : TextCopyProvider() {
-                        override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.EDT
-                        override fun getTextLinesToCopy() = listOfNotNull(selectedMessage).nullize()
-                    }
-                }
-            }
     }
 
     private fun preview(
