@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.4.0] - 2025-12-01
+
 - ⬆️ Update versions of dependencie
 - 🌐Add pt_BR translation (thanks to @P3terHenry)
 
@@ -127,7 +129,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.3.0...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.4.0...HEAD
+[2.4.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.3...v2.3.0
 [2.2.3]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/patou/gitmoji-intellij-plugin/compare/v2.1.0...v2.2.2
