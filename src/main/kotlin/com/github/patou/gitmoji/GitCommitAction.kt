@@ -1,12 +1,9 @@
 package com.github.patou.gitmoji
 
-import com.intellij.ide.TextCopyProvider
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.PlatformCoreDataKeys
-import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager.getApplication
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.command.undo.UndoManager
@@ -27,7 +24,6 @@ import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.ui.speedSearch.SpeedSearchUtil.applySpeedSearchHighlighting
 import com.intellij.util.ObjectUtils.sentinel
-import com.intellij.util.containers.nullize
 import com.intellij.util.ui.JBUI.scale
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile.getSubjectRightMargin
 import java.awt.Point
@@ -57,14 +53,12 @@ class GitCommitAction : AnAction() {
         }
     }
 
-    @Suppress("MissingActionUpdateThread")
     private fun createPopup(
         project: Project,
         commitMessage: CommitMessage,
         listGitmoji: List<GitmojiData>
     ): JBPopup {
-        var chosenMessage: GitmojiData? = null
-        var selectedMessage: GitmojiData? = null
+        var wasChosen = false
         val rightMargin = getSubjectRightMargin(project)
         val previewCommandGroup = sentinel("Preview Commit Message")
         val projectInstance = PropertiesComponent.getInstance(project)
@@ -77,11 +71,10 @@ class GitCommitAction : AnAction() {
             .setFont(commitMessage.editorField.editor?.colorsScheme?.getFont(EditorFontType.PLAIN))
             .setVisibleRowCount(7)
             .setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-            .setItemSelectedCallback {
-                selectedMessage = it
-                it?.let { preview(project, commitMessage, it, currentCommitMessage, currentOffset, previewCommandGroup) }
+            .setItemSelectedCallback { gitmoji ->
+                gitmoji?.let { preview(project, commitMessage, it, currentCommitMessage, currentOffset, previewCommandGroup) }
             }
-            .setItemChosenCallback { chosenMessage = it }
+            .setItemChosenCallback { wasChosen = true }
             .setRenderer(object : ColoredListCellRenderer<GitmojiData>() {
                 override fun customizeCellRenderer(
                     list: JList<out GitmojiData>,
@@ -123,10 +116,7 @@ class GitCommitAction : AnAction() {
                     commitMessage.editorField.requestFocusInWindow()
                     // Use invokeLater() as onClosed() is called before callback from setItemChosenCallback
                     getApplication().invokeLater {
-                        chosenMessage ?: cancelPreview(
-                            project,
-                            commitMessage
-                        )
+                        if (!wasChosen) cancelPreview(project, commitMessage)
                     }
                 }
             })
