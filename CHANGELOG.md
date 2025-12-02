@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [2.5.0] - 2025-12-01
+
 - 🚚 Rename repository to gitmoji-plus-commit-button
 
 ## [2.4.0] - 2025-12-01
@@ -131,7 +133,8 @@
 
 - Compatibility with 2019.2
 
-[Unreleased]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.4.0...HEAD
+[Unreleased]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.5.0...HEAD
+[2.5.0]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.2.3...v2.3.0
 [2.2.3]: https://github.com/patou/gitmoji-plus-commit-button/compare/v2.2.2...v2.2.3
