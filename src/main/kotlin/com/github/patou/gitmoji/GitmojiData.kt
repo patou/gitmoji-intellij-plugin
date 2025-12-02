@@ -10,6 +10,10 @@ const val CONFIG_LANGUAGE: String = "com.github.patou.gitmoji.language"
 const val CONFIG_INSERT_IN_CURSOR_POSITION: String = "com.github.patou.gitmoji.insert-in-cursor-position"
 const val CONFIG_INCLUDE_GITMOJI_DESCRIPTION: String = "com.github.patou.gitmoji.include-gitmoji-description"
 const val CONFIG_USE_PROJECT_SETTINGS: String = "com.github.patou.gitmoji.use-project-settings"
+const val CONFIG_GITMOJI_JSON_URL: String = "com.github.patou.gitmoji.gitmoji-json-url"
+const val CONFIG_GITMOJI_JSON_URL_DEFAULT: String = "https://gitmoji.dev/api/gitmojis"
+const val CONFIG_LOCALIZATION_URL: String = "com.github.patou.gitmoji.localization-url"
+const val CONFIG_LOCALIZATION_URL_DEFAULT: String = "https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/refs/heads/master/src/main/resources/gitmojis-{locale}.yaml"
 
 data class GitmojiData(val code: String, val emoji: String, val description: String, val name: String) {
     private lateinit var _icon: Icon

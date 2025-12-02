@@ -39,9 +39,11 @@ object GitmojiLocale {
             // no need to load english translations, as they are the default
             return
         }
+        val requestUrl = instance.getValue(CONFIG_LOCALIZATION_URL, CONFIG_LOCALIZATION_URL_DEFAULT)
+            .replace("{locale}", language)
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
-            .url("https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/master/src/main/resources/gitmojis-$language.yaml")
+            .url(requestUrl)
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {

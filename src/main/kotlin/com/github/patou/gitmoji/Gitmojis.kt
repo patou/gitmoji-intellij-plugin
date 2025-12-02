@@ -1,6 +1,7 @@
 package com.github.patou.gitmoji
 
 import com.google.gson.Gson
+import com.intellij.ide.util.PropertiesComponent
 import okhttp3.*
 import okhttp3.Request.Builder
 import java.io.IOException
@@ -9,9 +10,11 @@ object Gitmojis {
     val gitmojis = ArrayList<GitmojiData>()
 
     private fun loadGitmojiFromHTTP() {
+        val instance = PropertiesComponent.getInstance()
+        val jsonUrl = instance.getValue(CONFIG_GITMOJI_JSON_URL, CONFIG_GITMOJI_JSON_URL_DEFAULT)
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Builder()
-            .url("https://gitmoji.dev/api/gitmojis")
+            .url(jsonUrl)
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
