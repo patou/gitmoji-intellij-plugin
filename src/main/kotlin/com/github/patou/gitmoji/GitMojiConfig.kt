@@ -12,14 +12,15 @@ import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
+import javax.swing.JTextArea
 
 class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
     private val useUnicode = JCheckBox(GitmojiBundle.message("config.useUnicode"))
-    private val displayEmoji =
-        JCheckBox(GitmojiBundle.message("config.displayEmoji"))
+    private val displayEmoji = JCheckBox(GitmojiBundle.message("config.displayEmoji"))
     private val insertInCursorPosition = JCheckBox(GitmojiBundle.message("config.insertInCursorPosition"))
     private val includeGitMojiDescription = JCheckBox(GitmojiBundle.message("config.includeGitMojiDescription"))
+    private val previewGitCommitMessage = JTextArea(2, 80)
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private var insertInCursorPositionConfig: Boolean = false
@@ -49,6 +50,9 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
 
     init {
         val flow = GridLayout(20, 2)
+        useUnicode.addChangeListener { previewCommit() }
+        insertInCursorPosition.addChangeListener { previewCommit() }
+        includeGitMojiDescription.addChangeListener { previewCommit() }
         mainPanel = JPanel(flow)
         mainPanel.add(displayEmoji, null)
         mainPanel.add(useUnicode, null)
@@ -62,6 +66,9 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         languageJPanel.add(JLabel(GitmojiBundle.message("config.language")))
         languageJPanel.add(languages, null)
         mainPanel.add(languageJPanel)
+        previewGitCommitMessage.isEditable = false
+        mainPanel.add(JLabel("Preview"))
+        mainPanel.add(previewGitCommitMessage)
     }
 
     override fun apply() {
@@ -85,8 +92,8 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
         instance.setValue(CONFIG_LANGUAGE, languagesConfig)
         GitmojiLocale.loadTranslations()
+        previewCommit()
     }
-
     override fun reset() {
         val propertiesComponent = PropertiesComponent.getInstance(project)
         val instance = PropertiesComponent.getInstance()
@@ -107,6 +114,31 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
             else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
         }
         languages.selectedIndex = languageOptions.indexOf(languagesConfig)
+        previewCommit()
+    }
+
+    private fun previewCommit():Boolean {
+        var message = ""
+        if (insertInCursorPositionConfig) {
+            message += "Commit message|"
+        }
+        if (useUnicodeConfig) {
+            message += "✨"
+        }
+        else {
+            message += ":sparkles:"
+        }
+        message += textAfterUnicodeConfig
+        val selectionStart = message.length
+        if (includeGitMojiDescriptionConfig) {
+            message += "Introduce new features."
+        }
+        else if (!insertInCursorPositionConfig) {
+            message += "Commit message"
+        }
+        previewGitCommitMessage.text = message
+        previewGitCommitMessage.select(selectionStart, message.length)
+        return true
     }
 
     override fun createComponent(): JComponent = mainPanel
