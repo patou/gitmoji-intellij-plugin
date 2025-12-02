@@ -9,6 +9,7 @@ const val CONFIG_AFTER_UNICODE: String = "com.github.patou.gitmoji.text-after-un
 const val CONFIG_LANGUAGE: String = "com.github.patou.gitmoji.language"
 const val CONFIG_INSERT_IN_CURSOR_POSITION: String = "com.github.patou.gitmoji.insert-in-cursor-position"
 const val CONFIG_INCLUDE_GITMOJI_DESCRIPTION: String = "com.github.patou.gitmoji.include-gitmoji-description"
+const val CONFIG_USE_PROJECT_SETTINGS: String = "com.github.patou.gitmoji.use-project-settings"
 
 data class GitmojiData(val code: String, val emoji: String, val description: String, val name: String) {
     private lateinit var _icon: Icon
@@ -22,7 +23,7 @@ data class GitmojiData(val code: String, val emoji: String, val description: Str
                     false,
                     true
                 )!!
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 IconLoader.getIcon("/icons/gitmoji/anguished.png", GitmojiData::class.java)
             }
         }
