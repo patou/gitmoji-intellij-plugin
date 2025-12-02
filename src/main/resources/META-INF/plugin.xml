@@ -7,8 +7,8 @@
     <p>Add a gitmoji emoticon in your commits to make them sexier!</p>
     <p>This plug-in will help you to choose and add the gitmoji, via a button in the Commit window, among a predefined list of emoticons coming from <a href="https://gitmoji.carloscuesta.me/">reference commit rules.</a></p>
 
-    <img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-button.png"/>
-    <img src="https://github.com/patou/gitmoji-intellij-plugin/raw/master/screenshot/gitmoji-list.png"/>
+    <img src="https://github.com/patou/gitmoji-plus-commit-button/raw/master/screenshot/gitmoji-button.png"/>
+    <img src="https://github.com/patou/gitmoji-plus-commit-button/raw/master/screenshot/gitmoji-list.png"/>
 
     <h3>Features :</h3>
     <ul>

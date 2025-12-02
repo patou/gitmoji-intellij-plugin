@@ -37,7 +37,7 @@ object GitmojiLocale {
         }
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
-            .url("https://raw.githubusercontent.com/patou/gitmoji-intellij-plugin/master/src/main/resources/R")
+            .url("https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/master/src/main/resources/R")
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
