@@ -15,11 +15,13 @@ import javax.swing.JPanel
 
 class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private val mainPanel: JPanel
+    private val useProjectSettings = JCheckBox("Use project-specific settings (instead of global)")
     private val useUnicode = JCheckBox(GitmojiBundle.message("config.useUnicode"))
     private val displayEmoji =
         JCheckBox(GitmojiBundle.message("config.displayEmoji"))
     private val insertInCursorPosition = JCheckBox(GitmojiBundle.message("config.insertInCursorPosition"))
     private val includeGitMojiDescription = JCheckBox(GitmojiBundle.message("config.includeGitMojiDescription"))
+    private var useProjectSettingsConfig: Boolean = false
     private var useUnicodeConfig: Boolean = false
     private var displayEmojiConfig: String = "emoji"
     private var insertInCursorPositionConfig: Boolean = false
@@ -32,13 +34,13 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private var languagesConfig:String = "auto"
 
     override fun isModified(): Boolean =
-        Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") || Configurable.isCheckboxModified(
-            useUnicode,
-            useUnicodeConfig
-        ) || isModified(textAfterUnicode, textAfterUnicodeConfig) || Configurable.isCheckboxModified(
-            insertInCursorPosition,
-            insertInCursorPositionConfig
-        ) || Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
+        Configurable.isCheckboxModified(useProjectSettings, useProjectSettingsConfig) ||
+        Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") ||
+        Configurable.isCheckboxModified(useUnicode, useUnicodeConfig) ||
+        isModified(textAfterUnicode, textAfterUnicodeConfig) ||
+        isModified(languages, languagesConfig) ||
+        Configurable.isCheckboxModified(insertInCursorPosition, insertInCursorPositionConfig) ||
+        Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
 
     private fun isModified(comboBox: ComboBox<String>, value: String): Boolean {
         return !Comparing.equal(comboBox.selectedItem, value)
@@ -50,6 +52,8 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     init {
         val flow = GridLayout(20, 2)
         mainPanel = JPanel(flow)
+        mainPanel.add(useProjectSettings, null)
+        mainPanel.add(JPanel(), null) // empty cell
         mainPanel.add(displayEmoji, null)
         mainPanel.add(useUnicode, null)
         mainPanel.add(insertInCursorPosition, null)
@@ -65,6 +69,9 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     }
 
     override fun apply() {
+        val wasProjectSettings = useProjectSettingsConfig
+        useProjectSettingsConfig = useProjectSettings.isSelected
+
         displayEmojiConfig = if (displayEmoji.isSelected) "emoji" else "icon"
         useUnicodeConfig = useUnicode.isSelected
         insertInCursorPositionConfig = insertInCursorPosition.isSelected
@@ -76,27 +83,58 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         }
         languagesConfig = languageOptions[languages.selectedIndex]
 
-        val projectInstance = PropertiesComponent.getInstance(project)
-        val instance = PropertiesComponent.getInstance()
-        projectInstance.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
-        projectInstance.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
-        projectInstance.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
-        projectInstance.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
-        projectInstance.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
-        instance.setValue(CONFIG_LANGUAGE, languagesConfig)
+        val projectProps = PropertiesComponent.getInstance(project)
+        val appProps = PropertiesComponent.getInstance()
+
+        // Save the toggle itself in project
+        projectProps.setValue(CONFIG_USE_PROJECT_SETTINGS, useProjectSettingsConfig)
+
+        val propsToSave = if (useProjectSettingsConfig) projectProps else appProps
+        propsToSave.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
+        propsToSave.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
+        propsToSave.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
+        propsToSave.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
+        propsToSave.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
+        propsToSave.setValue(CONFIG_LANGUAGE, languagesConfig)
+
+        // If we just unchecked, remove project settings
+        if (wasProjectSettings && !useProjectSettingsConfig) {
+            clearProjectSettings(projectProps)
+        }
+
         GitmojiLocale.loadTranslations()
     }
 
-    override fun reset() {
-        val propertiesComponent = PropertiesComponent.getInstance(project)
-        val instance = PropertiesComponent.getInstance()
+    private fun clearProjectSettings(props: PropertiesComponent) {
+        try {
+            props.unsetValue(CONFIG_DISPLAY_ICON)
+            props.unsetValue(CONFIG_INSERT_IN_CURSOR_POSITION)
+            props.unsetValue(CONFIG_USE_UNICODE)
+            props.unsetValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION)
+            props.unsetValue(CONFIG_AFTER_UNICODE)
+            props.unsetValue(CONFIG_LANGUAGE)
+        } catch (_: Exception) {
+            // Ignore errors during cleanup
+        }
+    }
 
-        displayEmojiConfig = propertiesComponent.getValue(CONFIG_DISPLAY_ICON, defaultDisplayType())
-        useUnicodeConfig = propertiesComponent.getBoolean(CONFIG_USE_UNICODE, false)
-        insertInCursorPositionConfig = propertiesComponent.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
-        includeGitMojiDescriptionConfig = propertiesComponent.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
-        textAfterUnicodeConfig = propertiesComponent.getValue(CONFIG_AFTER_UNICODE, " ")
-        languagesConfig = instance.getValue(CONFIG_LANGUAGE, "auto")
+    override fun reset() {
+        val projectProps = PropertiesComponent.getInstance(project)
+        val appProps = PropertiesComponent.getInstance()
+
+        // Check if using project settings
+        useProjectSettingsConfig = projectProps.getBoolean(CONFIG_USE_PROJECT_SETTINGS, false)
+        useProjectSettings.isSelected = useProjectSettingsConfig
+
+        // Load from appropriate source
+        val props = if (useProjectSettingsConfig) projectProps else appProps
+
+        displayEmojiConfig = props.getValue(CONFIG_DISPLAY_ICON, defaultDisplayType())
+        useUnicodeConfig = props.getBoolean(CONFIG_USE_UNICODE, false)
+        insertInCursorPositionConfig = props.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
+        includeGitMojiDescriptionConfig = props.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
+        textAfterUnicodeConfig = props.getValue(CONFIG_AFTER_UNICODE, " ")
+        languagesConfig = props.getValue(CONFIG_LANGUAGE, "auto")
 
         displayEmoji.isSelected = displayEmojiConfig == "emoji"
         useUnicode.isSelected = useUnicodeConfig

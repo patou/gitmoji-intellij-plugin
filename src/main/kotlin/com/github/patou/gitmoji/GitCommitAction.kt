@@ -1,6 +1,5 @@
 package com.github.patou.gitmoji
 
-import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -61,7 +60,7 @@ class GitCommitAction : AnAction() {
         var wasChosen = false
         val rightMargin = getSubjectRightMargin(project)
         val previewCommandGroup = sentinel("Preview Commit Message")
-        val projectInstance = PropertiesComponent.getInstance(project)
+        val projectInstance = ConfigUtil.propsFor(project)
         val displayEmoji =
             projectInstance.getValue(CONFIG_DISPLAY_ICON, defaultDisplayType()) == "emoji"
         val currentCommitMessage = commitMessage.editorField.text
@@ -134,7 +133,7 @@ class GitCommitAction : AnAction() {
         groupId: Any
     ) =
         CommandProcessor.getInstance().executeCommand(project, {
-            val projectInstance = PropertiesComponent.getInstance(project)
+            val projectInstance = ConfigUtil.propsFor(project)
             val useUnicode = projectInstance.getBoolean(CONFIG_USE_UNICODE, false)
             val insertInCarretPosition = projectInstance.getBoolean(CONFIG_INSERT_IN_CURSOR_POSITION, false)
             val includeGitMojiDescription = projectInstance.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)

@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+- ⬆️ Update versions of dependencies
+- ✨ Configuration global or per project
+
 ## [2.5.0] - 2025-12-01
 
 - 🚚 Rename repository to gitmoji-plus-commit-button
