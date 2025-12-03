@@ -1,6 +1,7 @@
 package com.github.patou.gitmoji
 
 import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.project.Project
 
 object ConfigUtil {
@@ -16,7 +17,8 @@ object ConfigUtil {
             val projProps = PropertiesComponent.getInstance(project)
             val useProject = projProps.getBoolean(CONFIG_USE_PROJECT_SETTINGS, false)
             if (useProject) projProps else appProps
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            if (e is ProcessCanceledException) throw e
             appProps
         }
     }

@@ -2,11 +2,26 @@ package com.github.patou.gitmoji
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.ui.Messages
 
 class GitmojiStartupActivity : ProjectActivity {
+    private val logger = Logger.getInstance(GitmojiStartupActivity::class.java)
+
+
+    companion object {
+        private val MIGRATION_KEYS = listOf(
+            CONFIG_DISPLAY_ICON,
+            CONFIG_INSERT_IN_CURSOR_POSITION,
+            CONFIG_USE_UNICODE,
+            CONFIG_INCLUDE_GITMOJI_DESCRIPTION,
+            CONFIG_AFTER_UNICODE,
+            CONFIG_LANGUAGE
+        )
+    }
+
     override suspend fun execute(project: Project) {
         offerMigrationIfNeeded(project)
         Gitmojis.ensureGitmojisLoaded()
@@ -16,64 +31,38 @@ class GitmojiStartupActivity : ProjectActivity {
         val projectProps = PropertiesComponent.getInstance(project)
         val appProps = PropertiesComponent.getInstance()
 
-        println("[Gitmoji Migration] Starting migration check for project: ${project.name}")
+        logger.debug("Starting migration check for project: ${project.name}")
 
         // Check if already migrated or already has project settings toggle
         val migrationDoneKey = "com.github.patou.gitmoji.migration-offered"
         val alreadyMigrated = projectProps.getBoolean(migrationDoneKey, false)
 
-        println("[Gitmoji Migration] Already migrated flag: $alreadyMigrated")
-
         if (alreadyMigrated) {
-            println("[Gitmoji Migration] Migration already offered for project: ${project.name}")
+            logger.debug("Migration already offered for project: ${project.name}")
             return
         }
 
         // Check if CONFIG_USE_PROJECT_SETTINGS is already set (new version)
         val hasNewConfig = projectProps.getValue(CONFIG_USE_PROJECT_SETTINGS) != null
-        println("[Gitmoji Migration] Has new config system: $hasNewConfig")
 
         if (hasNewConfig) {
-            println("[Gitmoji Migration] Project already using new config system: ${project.name}")
+            logger.debug("Project already using new config system: ${project.name}")
             projectProps.setValue(migrationDoneKey, true)
             return
         }
 
         // Check if project has old settings (stored per-project before migration)
-        // Check for both string values and the keys existence
-        val displayIcon = projectProps.getValue(CONFIG_DISPLAY_ICON)
-        val useUnicode = projectProps.getValue(CONFIG_USE_UNICODE)
-        val afterUnicode = projectProps.getValue(CONFIG_AFTER_UNICODE)
-        val insertPos = projectProps.getValue(CONFIG_INSERT_IN_CURSOR_POSITION)
-        val includeDesc = projectProps.getValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION)
-        val language = projectProps.getValue(CONFIG_LANGUAGE)
+        val hasOldProjectSettings = MIGRATION_KEYS.any { projectProps.getValue(it) != null }
 
-        println("[Gitmoji Migration] Old settings check:")
-        println("[Gitmoji Migration]   CONFIG_DISPLAY_ICON: $displayIcon")
-        println("[Gitmoji Migration]   CONFIG_USE_UNICODE: $useUnicode")
-        println("[Gitmoji Migration]   CONFIG_AFTER_UNICODE: $afterUnicode")
-        println("[Gitmoji Migration]   CONFIG_INSERT_IN_CURSOR_POSITION: $insertPos")
-        println("[Gitmoji Migration]   CONFIG_INCLUDE_GITMOJI_DESCRIPTION: $includeDesc")
-        println("[Gitmoji Migration]   CONFIG_LANGUAGE: $language")
-
-        val hasOldProjectSettings =
-            displayIcon != null ||
-            useUnicode != null ||
-            afterUnicode != null ||
-            insertPos != null ||
-            includeDesc != null ||
-            language != null
-
-        println("[Gitmoji Migration] Has old project settings: $hasOldProjectSettings")
+        logger.debug("Old project settings present: ${MIGRATION_KEYS.filter { projectProps.getValue(it) != null }}")
 
         if (!hasOldProjectSettings) {
-            // No old settings, mark as migrated
-            println("[Gitmoji Migration] No old settings found, marking as migrated")
+            logger.debug("No old settings found, marking as migrated")
             projectProps.setValue(migrationDoneKey, true)
             return
         }
 
-        println("[Gitmoji Migration] Showing migration dialog for project: ${project.name}")
+        logger.info("Old Gitmoji settings detected in project '${project.name}', offering migration dialog")
 
         // Ask user what to do with old project settings
         ApplicationManager.getApplication().invokeLater {
@@ -91,11 +80,11 @@ class GitmojiStartupActivity : ProjectActivity {
             )
 
             if (result == Messages.YES) {
-                // Migrate to global
+                logger.info("Migrating Gitmoji settings to global for project '${project.name}'")
                 migrateToGlobal(projectProps, appProps)
                 projectProps.setValue(CONFIG_USE_PROJECT_SETTINGS, false)
             } else {
-                // Keep in project - enable project-specific mode
+                logger.info("Keeping project-specific Gitmoji settings for project '${project.name}'")
                 projectProps.setValue(CONFIG_USE_PROJECT_SETTINGS, true)
             }
 
@@ -104,28 +93,25 @@ class GitmojiStartupActivity : ProjectActivity {
     }
 
     private fun migrateToGlobal(projectProps: PropertiesComponent, appProps: PropertiesComponent) {
-        val keys = listOf(
-            CONFIG_DISPLAY_ICON,
-            CONFIG_INSERT_IN_CURSOR_POSITION,
-            CONFIG_USE_UNICODE,
-            CONFIG_INCLUDE_GITMOJI_DESCRIPTION,
-            CONFIG_AFTER_UNICODE,
-            CONFIG_LANGUAGE
-        )
 
-        for (key in keys) {
+        var migratedCount = 0
+        for (key in MIGRATION_KEYS) {
             projectProps.getValue(key)?.let { value ->
-                // Only migrate if global doesn't have a value yet
                 if (appProps.getValue(key) == null) {
                     appProps.setValue(key, value)
+                    logger.debug("Migrated $key: $value")
+                    migratedCount++
+                } else {
+                    logger.debug("Skipped $key (global already has value)")
                 }
-                // Remove from project
                 try {
                     projectProps.unsetValue(key)
-                } catch (_: Exception) {
-                    // Ignore errors during cleanup
+                } catch (e: Exception) {
+                    logger.warn("Failed to remove $key from project", e)
                 }
             }
         }
+
+        logger.info("Migration completed: $migratedCount setting(s) migrated to global")
     }
 }

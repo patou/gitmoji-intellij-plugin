@@ -88,27 +88,17 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         // Save the toggle itself in project
         projectProps.setValue(CONFIG_USE_PROJECT_SETTINGS, useProjectSettingsConfig)
 
-        if (useProjectSettingsConfig) {
-            // Save in project
-            projectProps.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
-            projectProps.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
-            projectProps.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
-            projectProps.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
-            projectProps.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
-            projectProps.setValue(CONFIG_LANGUAGE, languagesConfig)
-        } else {
-            // Save in global
-            appProps.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
-            appProps.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
-            appProps.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
-            appProps.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
-            appProps.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
-            appProps.setValue(CONFIG_LANGUAGE, languagesConfig)
+        val propsToSave = if (useProjectSettingsConfig) projectProps else appProps
+        propsToSave.setValue(CONFIG_DISPLAY_ICON, displayEmojiConfig)
+        propsToSave.setValue(CONFIG_INSERT_IN_CURSOR_POSITION, insertInCursorPositionConfig)
+        propsToSave.setValue(CONFIG_USE_UNICODE, useUnicodeConfig)
+        propsToSave.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
+        propsToSave.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
+        propsToSave.setValue(CONFIG_LANGUAGE, languagesConfig)
 
-            // If we just unchecked, remove project settings
-            if (wasProjectSettings && !useProjectSettingsConfig) {
-                clearProjectSettings(projectProps)
-            }
+        // If we just unchecked, remove project settings
+        if (wasProjectSettings && !useProjectSettingsConfig) {
+            clearProjectSettings(projectProps)
         }
 
         GitmojiLocale.loadTranslations()
