@@ -38,6 +38,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         Configurable.isCheckboxModified(displayEmoji, displayEmojiConfig == "emoji") ||
         Configurable.isCheckboxModified(useUnicode, useUnicodeConfig) ||
         isModified(textAfterUnicode, textAfterUnicodeConfig) ||
+        isModified(languages, languagesConfig) ||
         Configurable.isCheckboxModified(insertInCursorPosition, insertInCursorPositionConfig) ||
         Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig)
 
