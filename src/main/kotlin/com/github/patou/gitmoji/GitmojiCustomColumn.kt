@@ -34,7 +34,7 @@ class GitmojiCustomColumn : VcsLogCustomColumn<GitmojiData> {
     }
 
     override fun getValue(model: GraphTableModel, row: Int): GitmojiData? {
-        model.getCommitMetadata(row).let {
+        model.getCommitMetadata(row)?.let {
             for (moji in Gitmojis.gitmojis) {
                 if (it.subject.contains(moji.emoji) || it.subject.contains(moji.code)) {
                     return moji

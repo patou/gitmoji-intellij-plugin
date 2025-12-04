@@ -13,7 +13,7 @@
 
 ## [2.4.0] - 2025-12-01
 
-- ⬆️ Update versions of dependencie
+- ⬆️ Update versions of dependencies
 - 🌐Add pt_BR translation (thanks to @P3terHenry)
 
 ## [2.3.0] - 2025-05-13

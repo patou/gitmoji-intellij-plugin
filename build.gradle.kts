@@ -108,9 +108,8 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            ide(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
+            recommended()
         }
-        freeArgs = listOf("-mute", "TemplateWordInPluginName")
     }
 }
 
