@@ -21,11 +21,14 @@ sealed interface GitmojiSourceType {
 
     companion object {
 
-        val OPTIONS = arrayOf(
-            OptionItem(Gitmoji.id, Gitmoji.settingsName),
-            OptionItem(ConventionalGitmoji.id, ConventionalGitmoji.settingsName),
-            OptionItem(Custom.ID, Custom.NAME)
-        )
+        // Initialize lazily to avoid referencing data objects during class initialization
+        val OPTIONS: Array<OptionItem<Id>> by lazy {
+            arrayOf(
+                OptionItem(Gitmoji.id, Gitmoji.settingsName),
+                OptionItem(ConventionalGitmoji.id, ConventionalGitmoji.settingsName),
+                OptionItem(Custom.ID, Custom.NAME)
+            )
+        }
     }
 
     data object Gitmoji : GitmojiSourceType {
