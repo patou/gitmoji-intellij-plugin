@@ -1,7 +1,9 @@
 package com.github.patou.gitmoji
 
+import com.github.patou.gitmoji.source.GitmojiSourceTypeProvider
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import okhttp3.*
 import org.yaml.snakeyaml.Yaml
 import java.io.IOException
@@ -22,10 +24,11 @@ object GitmojiLocale {
         return translations[name] ?: return description
     }
 
-    fun loadTranslations() {
+    fun loadTranslations(project: Project) {
         translations.clear()
-        val instance = PropertiesComponent.getInstance()
-        var language = instance.getValue(CONFIG_LANGUAGE) ?: "auto"
+        val sourceType = GitmojiSourceTypeProvider.provide(project)
+        val props = PropertiesComponent.getInstance(project)
+        var language = props.getValue(CONFIG_LANGUAGE) ?: "auto"
         if (language == "auto") {
             val defaultLanguage = Locale.getDefault().toString()
             if (LANGUAGE_CONFIG_LIST.contains(defaultLanguage)) {
@@ -39,8 +42,7 @@ object GitmojiLocale {
             // no need to load english translations, as they are the default
             return
         }
-        val requestUrl = instance.getValue(CONFIG_LOCALIZATION_URL, CONFIG_LOCALIZATION_URL_DEFAULT)
-            .replace("{locale}", language)
+        val requestUrl = sourceType.getLocalizedUrl(language)
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
             .url(requestUrl)

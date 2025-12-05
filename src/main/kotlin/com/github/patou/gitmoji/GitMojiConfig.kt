@@ -182,9 +182,9 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
             clearProjectSettings(projectProps)
         }
 
-        GitmojiLocale.loadTranslations()
+        GitmojiLocale.loadTranslations(project)
         Gitmojis.gitmojis.clear()
-        Gitmojis.ensureGitmojisLoaded()
+        Gitmojis.ensureGitmojisLoaded(project)
     }
 
     private fun clearProjectSettings(props: PropertiesComponent) {
