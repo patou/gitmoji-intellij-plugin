@@ -8,6 +8,8 @@ sealed interface GitmojiSourceType {
     val settingsName: String
     val jsonUrl: String
     val localizationUrl: String
+    val tooltipUrl: String
+    val tooltipText: String
 
     @JvmInline
     value class Id(val value: String)
@@ -31,6 +33,8 @@ sealed interface GitmojiSourceType {
         override val settingsName: String = "Gitmoji"
         override val jsonUrl: String = "https://gitmoji.dev/api/gitmojis"
         override val localizationUrl: String = "https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/refs/heads/master/src/main/resources/gitmojis-{locale}.yaml"
+        override val tooltipUrl: String = "https://gitmoji.dev/"
+        override val tooltipText: String = "<html>see official <a href>Gitmoji website</a></html>"
     }
 
     data object ConventionalGitmoji : GitmojiSourceType {
@@ -39,6 +43,8 @@ sealed interface GitmojiSourceType {
         override val settingsName: String = "Gitmoji Conventional"
         override val jsonUrl: String = "https://raw.githubusercontent.com/glazrtom/conventional-gitmoji-intellij-config/refs/heads/master/gitmojis.json"
         override val localizationUrl: String = "https://raw.githubusercontent.com/glazrtom/conventional-gitmoji-intellij-config/refs/heads/master/localizations/gitmojis-{locale}.yaml"
+        override val tooltipUrl: String = "https://conventional-gitmoji.web.app/"
+        override val tooltipText: String = "<html><a href>what are Conventional Gitmoji?</a></html>"
     }
 
     data class Custom(
@@ -48,11 +54,15 @@ sealed interface GitmojiSourceType {
 
         override val id: Id = ID
         override val settingsName: String = NAME
+        override val tooltipUrl: String = TOOLTIP_URL
+        override val tooltipText: String = TOOLTIP_TEXT
 
         companion object {
 
             val ID = Id("custom")
             const val NAME = "Custom"
+            const val TOOLTIP_URL = ""
+            const val TOOLTIP_TEXT = "<html>see <a href>how to create custom Gitmoji source</a></href>"
         }
     }
 }
