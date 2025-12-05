@@ -1,5 +1,6 @@
 package com.github.patou.gitmoji.source
 
+import com.github.patou.gitmoji.GitmojiBundle
 import com.github.patou.gitmoji.OptionItem
 
 sealed interface GitmojiSourceType {
@@ -34,7 +35,7 @@ sealed interface GitmojiSourceType {
         override val jsonUrl: String = "https://gitmoji.dev/api/gitmojis"
         override val localizationUrl: String = "https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/refs/heads/master/src/main/resources/gitmojis-{locale}.yaml"
         override val tooltipUrl: String = "https://gitmoji.dev/"
-        override val tooltipText: String = "<html>see official <a href>Gitmoji website</a></html>"
+        override val tooltipText: String = GitmojiBundle.message("config.source.type.gitmoji.tooltip")
     }
 
     data object ConventionalGitmoji : GitmojiSourceType {
@@ -44,7 +45,7 @@ sealed interface GitmojiSourceType {
         override val jsonUrl: String = "https://raw.githubusercontent.com/glazrtom/conventional-gitmoji-intellij-config/refs/heads/master/gitmojis.json"
         override val localizationUrl: String = "https://raw.githubusercontent.com/glazrtom/conventional-gitmoji-intellij-config/refs/heads/master/localizations/gitmojis-{locale}.yaml"
         override val tooltipUrl: String = "https://conventional-gitmoji.web.app/"
-        override val tooltipText: String = "<html><a href>what are Conventional Gitmoji?</a></html>"
+        override val tooltipText: String = GitmojiBundle.message("config.source.type.conventionalGitmoji.tooltip")
     }
 
     data class Custom(
@@ -62,7 +63,7 @@ sealed interface GitmojiSourceType {
             val ID = Id("custom")
             const val NAME = "Custom"
             const val TOOLTIP_URL = ""
-            const val TOOLTIP_TEXT = "<html>see <a href>how to create custom Gitmoji source</a></href>"
+            val TOOLTIP_TEXT = GitmojiBundle.message("config.source.type.custom.tooltip")
         }
     }
 }

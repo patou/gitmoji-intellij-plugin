@@ -96,7 +96,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
 
         // Gitmoji Source Type panel
         val gitmojiSourcePanel = JPanel(FlowLayout(FlowLayout.LEADING))
-        gitmojiSourcePanel.add(JLabel("Gitmoji Source Type:"))
+        gitmojiSourcePanel.add(JLabel(GitmojiBundle.message("config.source.type")))
         gitmojiSourceField.renderer = OptionItemRenderer()
         gitmojiSourcePanel.add(gitmojiSourceField, null)
 
@@ -130,13 +130,13 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
 
         // Gitmoji JSON URL panel
         gitmojiJsonPanel = JPanel(FlowLayout(FlowLayout.LEADING))
-        gitmojiJsonPanel.add(JLabel("Gitmoji JSON URL:"))
+        gitmojiJsonPanel.add(JLabel(GitmojiBundle.message("config.source.jsonUrl")))
         gitmojiJsonPanel.add(gitmojiJsonUrlField, null)
         mainPanel.add(gitmojiJsonPanel)
 
         // Localization URL panel
         localizationPanel = JPanel(FlowLayout(FlowLayout.LEADING))
-        localizationPanel.add(JLabel("Localization URL template (supports {locale}):"))
+        localizationPanel.add(JLabel(GitmojiBundle.message("config.source.localizationUrl")))
         localizationPanel.add(localizationUrlField, null)
         mainPanel.add(localizationPanel)
     }
