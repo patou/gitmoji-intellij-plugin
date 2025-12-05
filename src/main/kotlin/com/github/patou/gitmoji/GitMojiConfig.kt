@@ -1,5 +1,6 @@
 package com.github.patou.gitmoji
 
+import com.github.patou.gitmoji.source.GitmojiSourceType
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.SearchableConfigurable
@@ -34,8 +35,12 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
     private var textAfterUnicodeConfig: String = " "
     private var languagesConfig:String = "auto"
 
+    private val gitmojiSourceField = ComboBox(GitmojiSourceType.OPTIONS)
     private val gitmojiJsonUrlField = JTextField()
     private val localizationUrlField = JTextField()
+    private var gitmojiJsonPanel: JPanel
+    private var localizationPanel: JPanel
+    private var gitmojiSourceConfig: GitmojiSourceType.Id = GitmojiSourceType.Gitmoji.id
     private var gitmojiJsonUrlConfig: String = ""
     private var localizationUrlConfig: String = ""
 
@@ -47,6 +52,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         isModified(languages, languagesConfig) ||
         Configurable.isCheckboxModified(insertInCursorPosition, insertInCursorPositionConfig) ||
         Configurable.isCheckboxModified(includeGitMojiDescription, includeGitMojiDescriptionConfig) ||
+        isModified(gitmojiSourceField, gitmojiSourceConfig) ||
         gitmojiJsonUrlField.text != gitmojiJsonUrlConfig ||
         localizationUrlField.text != localizationUrlConfig
 
@@ -54,11 +60,16 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         return !Comparing.equal(comboBox.selectedItem, value)
     }
 
+    private fun <T> isModified(comboBox: ComboBox<OptionItem<T>>, value: T): Boolean {
+        val selectedItem = comboBox.selectedItem as? OptionItem<*>
+        return !Comparing.equal(selectedItem?.id, value)
+    }
+
     override fun getDisplayName(): String = GitmojiBundle.message("projectName")
     override fun getId(): String = "com.github.patou.gitmoji.config"
 
     init {
-        val flow = GridLayout(12, 1)
+        val flow = GridLayout(20, 2)
         mainPanel = JPanel(flow)
         mainPanel.add(useProjectSettings, null)
         mainPanel.add(JPanel(), null) // empty cell
@@ -75,14 +86,23 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         languageJPanel.add(languages, null)
         mainPanel.add(languageJPanel)
 
+        // Gitmoji Source Type panel
+        val gitmojiSourcePanel = JPanel(FlowLayout(FlowLayout.LEADING))
+        gitmojiSourcePanel.add(JLabel("Gitmoji Source Type:"))
+        gitmojiSourceField.renderer = OptionItemRenderer()
+        gitmojiSourcePanel.add(gitmojiSourceField, null)
+        mainPanel.add(gitmojiSourcePanel)
+
+        gitmojiSourceField.addItemListener { setGitmojiSourceFieldsVisibility() }
+
         // Gitmoji JSON URL panel
-        val gitmojiJsonPanel = JPanel(FlowLayout(FlowLayout.LEADING))
+        gitmojiJsonPanel = JPanel(FlowLayout(FlowLayout.LEADING))
         gitmojiJsonPanel.add(JLabel("Gitmoji JSON URL:"))
         gitmojiJsonPanel.add(gitmojiJsonUrlField, null)
         mainPanel.add(gitmojiJsonPanel)
 
         // Localization URL panel
-        val localizationPanel = JPanel(FlowLayout(FlowLayout.LEADING))
+        localizationPanel = JPanel(FlowLayout(FlowLayout.LEADING))
         localizationPanel.add(JLabel("Localization URL template (supports {locale}):"))
         localizationPanel.add(localizationUrlField, null)
         mainPanel.add(localizationPanel)
@@ -102,8 +122,10 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
             else -> textAfterUnicodeOptions[textAfterUnicode.selectedIndex]
         }
         languagesConfig = languageOptions[languages.selectedIndex]
+        gitmojiSourceConfig = (gitmojiSourceField.selectedItem as OptionItem<*>).id as GitmojiSourceType.Id
         gitmojiJsonUrlConfig = gitmojiJsonUrlField.text.trim()
         localizationUrlConfig = localizationUrlField.text.trim()
+        setGitmojiSourceFieldsVisibility()
 
         val projectProps = PropertiesComponent.getInstance(project)
         val appProps = PropertiesComponent.getInstance()
@@ -118,6 +140,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         propsToSave.setValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, includeGitMojiDescriptionConfig)
         propsToSave.setValue(CONFIG_AFTER_UNICODE, textAfterUnicodeConfig)
         propsToSave.setValue(CONFIG_LANGUAGE, languagesConfig)
+        propsToSave.setValue(CONFIG_GITMOJI_SOURCE_TYPE, gitmojiSourceConfig.value)
         propsToSave.setValue(CONFIG_GITMOJI_JSON_URL, gitmojiJsonUrlConfig)
         propsToSave.setValue(CONFIG_LOCALIZATION_URL, localizationUrlConfig)
 
@@ -139,6 +162,9 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
             props.unsetValue(CONFIG_INCLUDE_GITMOJI_DESCRIPTION)
             props.unsetValue(CONFIG_AFTER_UNICODE)
             props.unsetValue(CONFIG_LANGUAGE)
+            props.unsetValue(CONFIG_GITMOJI_SOURCE_TYPE)
+            props.unsetValue(CONFIG_GITMOJI_JSON_URL)
+            props.unsetValue(CONFIG_LOCALIZATION_URL)
         } catch (_: Exception) {
             // Ignore errors during cleanup
         }
@@ -161,6 +187,7 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         includeGitMojiDescriptionConfig = props.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
         textAfterUnicodeConfig = props.getValue(CONFIG_AFTER_UNICODE, " ")
         languagesConfig = props.getValue(CONFIG_LANGUAGE, "auto")
+        gitmojiSourceConfig = (props.getValue(CONFIG_GITMOJI_SOURCE_TYPE, GitmojiSourceType.Gitmoji.id.value)).let(GitmojiSourceType::Id)
         gitmojiJsonUrlConfig = props.getValue(CONFIG_GITMOJI_JSON_URL, CONFIG_GITMOJI_JSON_URL_DEFAULT)
         localizationUrlConfig = props.getValue(CONFIG_LOCALIZATION_URL, CONFIG_LOCALIZATION_URL_DEFAULT)
 
@@ -173,9 +200,18 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
             else -> textAfterUnicodeOptions.indexOf(textAfterUnicodeConfig)
         }
         languages.selectedIndex = languageOptions.indexOf(languagesConfig)
+        gitmojiSourceField.selectedIndex = GitmojiSourceType.OPTIONS.indexOfFirst { it.id == gitmojiSourceConfig }
         gitmojiJsonUrlField.text = gitmojiJsonUrlConfig
         localizationUrlField.text = localizationUrlConfig
+        setGitmojiSourceFieldsVisibility()
     }
 
     override fun createComponent(): JComponent = mainPanel
+
+    private fun setGitmojiSourceFieldsVisibility() {
+        val selectedId = (gitmojiSourceField.selectedItem as OptionItem<*>).id
+        val gitmojiSourceFieldsVisibility = selectedId == GitmojiSourceType.Custom.ID
+        gitmojiJsonPanel.isVisible = gitmojiSourceFieldsVisibility
+        localizationPanel.isVisible = gitmojiSourceFieldsVisibility
+    }
 }
