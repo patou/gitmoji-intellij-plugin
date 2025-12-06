@@ -27,7 +27,7 @@ object GitmojiLocale {
     fun loadTranslations(project: Project) {
         translations.clear()
         val sourceType = GitmojiSourceTypeProvider.provide(project)
-        val props = PropertiesComponent.getInstance(project)
+        val props = ConfigUtil.propsFor(project)
         var language = props.getValue(CONFIG_LANGUAGE) ?: "auto"
         if (language == "auto") {
             val defaultLanguage = Locale.getDefault().toString()
