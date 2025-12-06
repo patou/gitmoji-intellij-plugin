@@ -65,7 +65,7 @@ sealed interface GitmojiSourceType {
 
             val ID = Id("custom")
             const val NAME = "Custom"
-            const val TOOLTIP_URL = ""
+            const val TOOLTIP_URL = "https://github.com/patou/gitmoji-plus-commit-button/blob/master/custom_gitmojis.md"
             val TOOLTIP_TEXT = GitmojiBundle.message("config.source.type.custom.tooltip")
         }
     }

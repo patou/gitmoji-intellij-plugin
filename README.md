@@ -16,6 +16,7 @@ This plug-in will help you to choose and add the gitmoji, via a button in the Co
 * Load the list of gitmoji on startup from the repos of gitmoji (fallback to a local list if error).
 * Allow to display the gitmoji in a new column in the commit history
 * Translate the gitmoji description in your chinese and french language.
+* Custom gitmoji list from url or predefined default [Gitmojis](https://gitmoji.dev/) or [Conventional Gitmojis](https://conventional-gitmoji.web.app/)
 
 See the [gitmoji website](https://gitmoji.dev/) for have the list of Emoji and their signification.
 <!-- Plugin description end -->
@@ -33,6 +34,10 @@ https://plugins.jetbrains.com/plugin/12383-gitmoji/
 
 In IntelliJ, go to preference, then Plugins, and search Gitmoji by Patrice de Saint Steban.
 After install, and restart, you will have a button on the commit dialog.
+
+## Customization
+
+See [custom gitmojis](docs/custom_gitmojis.md) documentation.
 
 ## Contrib
 
