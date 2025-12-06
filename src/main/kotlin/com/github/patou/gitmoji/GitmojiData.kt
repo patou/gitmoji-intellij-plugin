@@ -13,9 +13,7 @@ const val CONFIG_INCLUDE_GITMOJI_DESCRIPTION: String = "com.github.patou.gitmoji
 const val CONFIG_USE_PROJECT_SETTINGS: String = "com.github.patou.gitmoji.use-project-settings"
 const val CONFIG_GITMOJI_SOURCE_TYPE: String = "com.github.patou.gitmoji.gitmoji-source-type"
 const val CONFIG_GITMOJI_JSON_URL: String = "com.github.patou.gitmoji.gitmoji-json-url"
-val CONFIG_GITMOJI_JSON_URL_DEFAULT: String = GitmojiSourceType.Gitmoji.jsonUrl
 const val CONFIG_LOCALIZATION_URL: String = "com.github.patou.gitmoji.localization-url"
-val CONFIG_LOCALIZATION_URL_DEFAULT: String = GitmojiSourceType.Gitmoji.localizationUrl
 
 data class GitmojiData(val code: String, val emoji: String, val description: String, val name: String) {
     private lateinit var _icon: Icon

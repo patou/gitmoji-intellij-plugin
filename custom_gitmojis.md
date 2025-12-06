@@ -34,7 +34,8 @@ If the HTTP request fails or returns an invalid response, the plugin will silent
 ### Localization
 - Localized translations are provided as YAML files mapping gitmoji `name` → localized description.
 - Provide YAML translations keyed by `name` (not `code`). The plugin looks up translations by the `name` field from the JSON.
-- The plugin uses a localization URL template that should include the `{locale}` token. Example:
+- If the field is left empty, description from the JSON source is used.
+- The plugin uses a localization URL template that can be included with the `{locale}` token. Example:
 
 ```
 https://mydomain.com/gitmojis-{locale}.yaml

@@ -220,8 +220,8 @@ class GitMojiConfig(private val project: Project) : SearchableConfigurable {
         includeGitMojiDescriptionConfig = props.getBoolean(CONFIG_INCLUDE_GITMOJI_DESCRIPTION, false)
         textAfterUnicodeConfig = props.getValue(CONFIG_AFTER_UNICODE, " ")
         languagesConfig = props.getValue(CONFIG_LANGUAGE, "auto")
-        gitmojiJsonUrlConfig = props.getValue(CONFIG_GITMOJI_JSON_URL, CONFIG_GITMOJI_JSON_URL_DEFAULT)
-        localizationUrlConfig = props.getValue(CONFIG_LOCALIZATION_URL, CONFIG_LOCALIZATION_URL_DEFAULT)
+        gitmojiJsonUrlConfig = props.getValue(CONFIG_GITMOJI_JSON_URL, "")
+        localizationUrlConfig = props.getValue(CONFIG_LOCALIZATION_URL, "")
         val gitmojiSourceConfigId = (props.getValue(CONFIG_GITMOJI_SOURCE_TYPE, GitmojiSourceType.Gitmoji.id.value)).let(GitmojiSourceType::Id)
         gitmojiSourceConfig = GitmojiSourceTypeMapper.fromId(gitmojiSourceConfigId, gitmojiJsonUrlConfig, localizationUrlConfig)
 

@@ -38,11 +38,11 @@ object GitmojiLocale {
                 language = "en_US"
             }
         }
-        if (language == "en_US") {
+        val requestUrl = sourceType.getLocalizedUrl(language)
+        if (language == "en_US" || requestUrl.isBlank()) {
             // no need to load english translations, as they are the default
             return
         }
-        val requestUrl = sourceType.getLocalizedUrl(language)
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
             .url(requestUrl)
