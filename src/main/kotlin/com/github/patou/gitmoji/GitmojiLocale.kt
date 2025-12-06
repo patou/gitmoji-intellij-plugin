@@ -1,7 +1,9 @@
 package com.github.patou.gitmoji
 
+import com.github.patou.gitmoji.source.GitmojiSourceTypeProvider
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import okhttp3.*
 import org.yaml.snakeyaml.Yaml
 import java.io.IOException
@@ -22,10 +24,11 @@ object GitmojiLocale {
         return translations[name] ?: return description
     }
 
-    fun loadTranslations() {
+    fun loadTranslations(project: Project) {
         translations.clear()
-        val instance = PropertiesComponent.getInstance()
-        var language = instance.getValue(CONFIG_LANGUAGE) ?: "auto"
+        val sourceType = GitmojiSourceTypeProvider.provide(project)
+        val props = ConfigUtil.propsFor(project)
+        var language = props.getValue(CONFIG_LANGUAGE) ?: "auto"
         if (language == "auto") {
             val defaultLanguage = Locale.getDefault().toString()
             if (LANGUAGE_CONFIG_LIST.contains(defaultLanguage)) {
@@ -35,13 +38,14 @@ object GitmojiLocale {
                 language = "en_US"
             }
         }
-        if (language == "en_US") {
+        val requestUrl = sourceType.getLocalizedUrl(language)
+        if (language == "en_US" || requestUrl.isBlank()) {
             // no need to load english translations, as they are the default
             return
         }
         val client = OkHttpClient().newBuilder().addInterceptor(SafeGuardInterceptor()).build()
         val request: Request = Request.Builder()
-            .url("https://raw.githubusercontent.com/patou/gitmoji-plus-commit-button/master/src/main/resources/gitmojis-$language.yaml")
+            .url(requestUrl)
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {

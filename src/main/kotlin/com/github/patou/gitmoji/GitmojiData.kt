@@ -1,5 +1,6 @@
 package com.github.patou.gitmoji
 
+import com.github.patou.gitmoji.source.GitmojiSourceType
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
@@ -10,6 +11,9 @@ const val CONFIG_LANGUAGE: String = "com.github.patou.gitmoji.language"
 const val CONFIG_INSERT_IN_CURSOR_POSITION: String = "com.github.patou.gitmoji.insert-in-cursor-position"
 const val CONFIG_INCLUDE_GITMOJI_DESCRIPTION: String = "com.github.patou.gitmoji.include-gitmoji-description"
 const val CONFIG_USE_PROJECT_SETTINGS: String = "com.github.patou.gitmoji.use-project-settings"
+const val CONFIG_GITMOJI_SOURCE_TYPE: String = "com.github.patou.gitmoji.gitmoji-source-type"
+const val CONFIG_GITMOJI_JSON_URL: String = "com.github.patou.gitmoji.gitmoji-json-url"
+const val CONFIG_LOCALIZATION_URL: String = "com.github.patou.gitmoji.localization-url"
 
 data class GitmojiData(val code: String, val emoji: String, val description: String, val name: String) {
     private lateinit var _icon: Icon

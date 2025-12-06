@@ -24,7 +24,7 @@ class GitmojiStartupActivity : ProjectActivity {
 
     override suspend fun execute(project: Project) {
         offerMigrationIfNeeded(project)
-        Gitmojis.ensureGitmojisLoaded()
+        Gitmojis.ensureGitmojisLoaded(project)
     }
 
     private fun offerMigrationIfNeeded(project: Project) {
